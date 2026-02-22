@@ -9,9 +9,35 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ShopRouteImport } from './routes/shop'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as BackofficeRouteImport } from './routes/backoffice'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ShopIndexRouteImport } from './routes/shop/index'
+import { Route as BackofficeIndexRouteImport } from './routes/backoffice/index'
+import { Route as BackofficeUsersRouteImport } from './routes/backoffice/users'
+import { Route as BackofficeSettlementRouteImport } from './routes/backoffice/settlement'
+import { Route as BackofficeReportingRouteImport } from './routes/backoffice/reporting'
+import { Route as BackofficeMasterDataRouteImport } from './routes/backoffice/master-data'
+import { Route as ShopProductIdRouteImport } from './routes/shop/product.$id'
+import { Route as BackofficeProductIdRouteImport } from './routes/backoffice/product.$id'
 
+const ShopRoute = ShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BackofficeRoute = BackofficeRouteImport.update({
+  id: '/backoffice',
+  path: '/backoffice',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -22,35 +48,168 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ShopIndexRoute = ShopIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ShopRoute,
+} as any)
+const BackofficeIndexRoute = BackofficeIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BackofficeRoute,
+} as any)
+const BackofficeUsersRoute = BackofficeUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => BackofficeRoute,
+} as any)
+const BackofficeSettlementRoute = BackofficeSettlementRouteImport.update({
+  id: '/settlement',
+  path: '/settlement',
+  getParentRoute: () => BackofficeRoute,
+} as any)
+const BackofficeReportingRoute = BackofficeReportingRouteImport.update({
+  id: '/reporting',
+  path: '/reporting',
+  getParentRoute: () => BackofficeRoute,
+} as any)
+const BackofficeMasterDataRoute = BackofficeMasterDataRouteImport.update({
+  id: '/master-data',
+  path: '/master-data',
+  getParentRoute: () => BackofficeRoute,
+} as any)
+const ShopProductIdRoute = ShopProductIdRouteImport.update({
+  id: '/product/$id',
+  path: '/product/$id',
+  getParentRoute: () => ShopRoute,
+} as any)
+const BackofficeProductIdRoute = BackofficeProductIdRouteImport.update({
+  id: '/product/$id',
+  path: '/product/$id',
+  getParentRoute: () => BackofficeRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/backoffice': typeof BackofficeRouteWithChildren
+  '/login': typeof LoginRoute
+  '/shop': typeof ShopRouteWithChildren
+  '/backoffice/master-data': typeof BackofficeMasterDataRoute
+  '/backoffice/reporting': typeof BackofficeReportingRoute
+  '/backoffice/settlement': typeof BackofficeSettlementRoute
+  '/backoffice/users': typeof BackofficeUsersRoute
+  '/backoffice/': typeof BackofficeIndexRoute
+  '/shop/': typeof ShopIndexRoute
+  '/backoffice/product/$id': typeof BackofficeProductIdRoute
+  '/shop/product/$id': typeof ShopProductIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/login': typeof LoginRoute
+  '/backoffice/master-data': typeof BackofficeMasterDataRoute
+  '/backoffice/reporting': typeof BackofficeReportingRoute
+  '/backoffice/settlement': typeof BackofficeSettlementRoute
+  '/backoffice/users': typeof BackofficeUsersRoute
+  '/backoffice': typeof BackofficeIndexRoute
+  '/shop': typeof ShopIndexRoute
+  '/backoffice/product/$id': typeof BackofficeProductIdRoute
+  '/shop/product/$id': typeof ShopProductIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/backoffice': typeof BackofficeRouteWithChildren
+  '/login': typeof LoginRoute
+  '/shop': typeof ShopRouteWithChildren
+  '/backoffice/master-data': typeof BackofficeMasterDataRoute
+  '/backoffice/reporting': typeof BackofficeReportingRoute
+  '/backoffice/settlement': typeof BackofficeSettlementRoute
+  '/backoffice/users': typeof BackofficeUsersRoute
+  '/backoffice/': typeof BackofficeIndexRoute
+  '/shop/': typeof ShopIndexRoute
+  '/backoffice/product/$id': typeof BackofficeProductIdRoute
+  '/shop/product/$id': typeof ShopProductIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/backoffice'
+    | '/login'
+    | '/shop'
+    | '/backoffice/master-data'
+    | '/backoffice/reporting'
+    | '/backoffice/settlement'
+    | '/backoffice/users'
+    | '/backoffice/'
+    | '/shop/'
+    | '/backoffice/product/$id'
+    | '/shop/product/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to:
+    | '/'
+    | '/about'
+    | '/login'
+    | '/backoffice/master-data'
+    | '/backoffice/reporting'
+    | '/backoffice/settlement'
+    | '/backoffice/users'
+    | '/backoffice'
+    | '/shop'
+    | '/backoffice/product/$id'
+    | '/shop/product/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/backoffice'
+    | '/login'
+    | '/shop'
+    | '/backoffice/master-data'
+    | '/backoffice/reporting'
+    | '/backoffice/settlement'
+    | '/backoffice/users'
+    | '/backoffice/'
+    | '/shop/'
+    | '/backoffice/product/$id'
+    | '/shop/product/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  BackofficeRoute: typeof BackofficeRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  ShopRoute: typeof ShopRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/shop': {
+      id: '/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof ShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/backoffice': {
+      id: '/backoffice'
+      path: '/backoffice'
+      fullPath: '/backoffice'
+      preLoaderRoute: typeof BackofficeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -65,12 +224,105 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/shop/': {
+      id: '/shop/'
+      path: '/'
+      fullPath: '/shop/'
+      preLoaderRoute: typeof ShopIndexRouteImport
+      parentRoute: typeof ShopRoute
+    }
+    '/backoffice/': {
+      id: '/backoffice/'
+      path: '/'
+      fullPath: '/backoffice/'
+      preLoaderRoute: typeof BackofficeIndexRouteImport
+      parentRoute: typeof BackofficeRoute
+    }
+    '/backoffice/users': {
+      id: '/backoffice/users'
+      path: '/users'
+      fullPath: '/backoffice/users'
+      preLoaderRoute: typeof BackofficeUsersRouteImport
+      parentRoute: typeof BackofficeRoute
+    }
+    '/backoffice/settlement': {
+      id: '/backoffice/settlement'
+      path: '/settlement'
+      fullPath: '/backoffice/settlement'
+      preLoaderRoute: typeof BackofficeSettlementRouteImport
+      parentRoute: typeof BackofficeRoute
+    }
+    '/backoffice/reporting': {
+      id: '/backoffice/reporting'
+      path: '/reporting'
+      fullPath: '/backoffice/reporting'
+      preLoaderRoute: typeof BackofficeReportingRouteImport
+      parentRoute: typeof BackofficeRoute
+    }
+    '/backoffice/master-data': {
+      id: '/backoffice/master-data'
+      path: '/master-data'
+      fullPath: '/backoffice/master-data'
+      preLoaderRoute: typeof BackofficeMasterDataRouteImport
+      parentRoute: typeof BackofficeRoute
+    }
+    '/shop/product/$id': {
+      id: '/shop/product/$id'
+      path: '/product/$id'
+      fullPath: '/shop/product/$id'
+      preLoaderRoute: typeof ShopProductIdRouteImport
+      parentRoute: typeof ShopRoute
+    }
+    '/backoffice/product/$id': {
+      id: '/backoffice/product/$id'
+      path: '/product/$id'
+      fullPath: '/backoffice/product/$id'
+      preLoaderRoute: typeof BackofficeProductIdRouteImport
+      parentRoute: typeof BackofficeRoute
+    }
   }
 }
+
+interface BackofficeRouteChildren {
+  BackofficeMasterDataRoute: typeof BackofficeMasterDataRoute
+  BackofficeReportingRoute: typeof BackofficeReportingRoute
+  BackofficeSettlementRoute: typeof BackofficeSettlementRoute
+  BackofficeUsersRoute: typeof BackofficeUsersRoute
+  BackofficeIndexRoute: typeof BackofficeIndexRoute
+  BackofficeProductIdRoute: typeof BackofficeProductIdRoute
+}
+
+const BackofficeRouteChildren: BackofficeRouteChildren = {
+  BackofficeMasterDataRoute: BackofficeMasterDataRoute,
+  BackofficeReportingRoute: BackofficeReportingRoute,
+  BackofficeSettlementRoute: BackofficeSettlementRoute,
+  BackofficeUsersRoute: BackofficeUsersRoute,
+  BackofficeIndexRoute: BackofficeIndexRoute,
+  BackofficeProductIdRoute: BackofficeProductIdRoute,
+}
+
+const BackofficeRouteWithChildren = BackofficeRoute._addFileChildren(
+  BackofficeRouteChildren,
+)
+
+interface ShopRouteChildren {
+  ShopIndexRoute: typeof ShopIndexRoute
+  ShopProductIdRoute: typeof ShopProductIdRoute
+}
+
+const ShopRouteChildren: ShopRouteChildren = {
+  ShopIndexRoute: ShopIndexRoute,
+  ShopProductIdRoute: ShopProductIdRoute,
+}
+
+const ShopRouteWithChildren = ShopRoute._addFileChildren(ShopRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  BackofficeRoute: BackofficeRouteWithChildren,
+  LoginRoute: LoginRoute,
+  ShopRoute: ShopRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

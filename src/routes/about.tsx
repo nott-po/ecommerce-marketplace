@@ -1,5 +1,6 @@
-import * as React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
 
 export const Route = createFileRoute('/about')({
   component: AboutComponent,
@@ -7,8 +8,8 @@ export const Route = createFileRoute('/about')({
 
 function AboutComponent() {
   return (
-    <div className="p-2">
-      <h3>About</h3>
-    </div>
+    <Box sx={{ p: 2 }}>
+      <Typography variant="h6">About</Typography>
+    </Box>
   )
 }

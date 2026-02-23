@@ -14,6 +14,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import { LoadingState } from '../../../core/ui/LoadingState'
 import { ErrorState } from '../../../core/ui/ErrorState'
+import { ClickableText } from '../../../core/ui/ClickableText'
 import { useProduct } from '../lib/queries'
 import { useFavorites } from '../../../hooks/useFavorites'
 import { formatPrice, formatDiscount, slugToLabel } from '../../../utils/formatters'
@@ -49,20 +50,20 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
         separator={<NavigateNextIcon fontSize="small" />}
         sx={{ mb: 3, fontSize: '0.8125rem' }}
       >
-        <Typography
+        <ClickableText
           component="span"
           onClick={() => onNavigateToShop()}
-          sx={{ color: BRAND_COLORS.primary, fontSize: 'inherit', cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}
+          sx={{ color: BRAND_COLORS.primary, fontSize: 'inherit' }}
         >
           Shop
-        </Typography>
-        <Typography
+        </ClickableText>
+        <ClickableText
           component="span"
           onClick={() => onNavigateToShop(product.category)}
-          sx={{ color: BRAND_COLORS.primary, fontSize: 'inherit', cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}
+          sx={{ color: BRAND_COLORS.primary, fontSize: 'inherit' }}
         >
           {slugToLabel(product.category)}
-        </Typography>
+        </ClickableText>
         <Typography sx={{ fontSize: 'inherit', color: 'text.secondary' }}>
           {product.title}
         </Typography>

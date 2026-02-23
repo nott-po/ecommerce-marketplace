@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import Box from '@mui/material/Box'
-import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Alert from '@mui/material/Alert'
 import Divider from '@mui/material/Divider'
@@ -10,6 +8,9 @@ import CircularProgress from '@mui/material/CircularProgress'
 import { useAuth } from '../AuthContext'
 import { useRouter } from '@tanstack/react-router'
 import { BACKOFFICE_COLORS, BRAND_COLORS, UI_COLORS } from '../../../styles/theme'
+import { FlatButton } from '../../../shared/ui/FlatButton'
+import { ContentPaper } from '../../../shared/ui/ContentPaper'
+import { ClickableRow } from '../../../shared/ui/ClickableRow'
 
 const DEMO_ACCOUNTS = [
   { label: 'User account', username: 'averyp', password: 'averyppass', role: 'user' },
@@ -73,16 +74,7 @@ export const LoginPage: React.FC = () => {
         sx={{ height: 72, mb: 3 }}
       />
 
-      <Paper
-        sx={{
-          width: '100%',
-          maxWidth: 420,
-          p: 4,
-          borderRadius: 2,
-          border: `1px solid ${UI_COLORS.border}`,
-          boxShadow: '0 4px 24px rgba(0,0,0,0.07)',
-        }}
-      >
+      <ContentPaper sx={{ width: '100%', maxWidth: 420, p: 4, boxShadow: '0 4px 24px rgba(0,0,0,0.07)' }}>
         <Typography variant="h6" sx={{ fontWeight: 700, mb: 0.5, textAlign: 'center' }}>
           Welcome back
         </Typography>
@@ -117,23 +109,15 @@ export const LoginPage: React.FC = () => {
             onChange={e => setPassword(e.target.value)}
             sx={fieldSx}
           />
-          <Button
+          <FlatButton
             type="submit"
             variant="contained"
             fullWidth
             disabled={loading || !username.trim() || !password.trim()}
-            sx={{
-              mt: 0.5,
-              py: 1.1,
-              borderRadius: 1.5,
-              fontWeight: 600,
-              fontSize: '0.9375rem',
-              boxShadow: 'none',
-              '&:hover': { boxShadow: 'none' },
-            }}
+            sx={{ mt: 0.5, py: 1.1, fontWeight: 600, fontSize: '0.9375rem' }}
           >
             {loading ? <CircularProgress size={20} sx={{ color: 'white' }} /> : 'Sign In'}
-          </Button>
+          </FlatButton>
         </Box>
 
         <Divider sx={{ my: 3 }}>
@@ -144,22 +128,7 @@ export const LoginPage: React.FC = () => {
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
           {DEMO_ACCOUNTS.map(acc => (
-            <Box
-              key={acc.username}
-              onClick={() => fillDemo(acc.username, acc.password)}
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                border: `1px solid ${UI_COLORS.border}`,
-                borderRadius: 1.5,
-                px: 1.75,
-                py: 1,
-                cursor: 'pointer',
-                '&:hover': { bgcolor: UI_COLORS.bgSubtle, borderColor: UI_COLORS.borderHover },
-                transition: 'all 0.15s',
-              }}
-            >
+            <ClickableRow key={acc.username} onClick={() => fillDemo(acc.username, acc.password)}>
               <Box>
                 <Typography sx={{ fontSize: '0.8125rem', fontWeight: 600, color: UI_COLORS.textMedium }}>
                   {acc.label}
@@ -182,10 +151,10 @@ export const LoginPage: React.FC = () => {
               >
                 {acc.role}
               </Typography>
-            </Box>
+            </ClickableRow>
           ))}
         </Box>
-      </Paper>
+      </ContentPaper>
     </Box>
   )
 }

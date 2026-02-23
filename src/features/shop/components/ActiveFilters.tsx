@@ -1,9 +1,9 @@
 import React from 'react'
 import Box from '@mui/material/Box'
 import Chip from '@mui/material/Chip'
-import Typography from '@mui/material/Typography'
 import { slugToLabel } from '../../../utils/formatters'
 import type { PriceRange, ConditionFilter } from './FilterBar'
+import { ClickableText } from '../../../core/ui/ClickableText'
 
 const PRICE_LABELS: Record<PriceRange, string> = {
   '': '',
@@ -45,7 +45,7 @@ export const ActiveFilters: React.FC<ActiveFiltersProps> = ({
 
   if (filters.length === 0){
     return null;
-  } 
+  }
 
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, alignItems: 'center', mt: 1 }}>
@@ -60,19 +60,13 @@ export const ActiveFilters: React.FC<ActiveFiltersProps> = ({
       ))}
 
       {filters.length > 1 && (
-        <Typography
+        <ClickableText
           component="span"
-          sx={{
-            fontSize: '0.8rem',
-            color: 'primary.main',
-            cursor: 'pointer',
-            ml: 0.5,
-            '&:hover': { textDecoration: 'underline' },
-          }}
+          sx={{ fontSize: '0.8rem', color: 'primary.main', ml: 0.5 }}
           onClick={onClearAll}
         >
           Clear all
-        </Typography>
+        </ClickableText>
       )}
     </Box>
   )

@@ -1,6 +1,5 @@
 import React from 'react'
 import Box from '@mui/material/Box'
-import Paper from '@mui/material/Paper'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
@@ -16,6 +15,7 @@ import { formatPrice, formatDiscount, slugToLabel } from '../../../utils/formatt
 import type { ItemStatus } from '../types/backoffice'
 import { STATUS_CYCLE } from '../types/backoffice'
 import { BACKOFFICE_COLORS, BRAND_COLORS, STATUS_COLORS, UI_COLORS } from '../../../styles/theme'
+import { ContentPaper } from '../../../shared/ui/ContentPaper'
 
 const STATUS_STYLE: Record<ItemStatus, { bg: string; color: string }> = {
   'In Sale':     { bg: STATUS_COLORS.inSaleBg,     color: STATUS_COLORS.inSale },
@@ -96,7 +96,7 @@ export const BackofficeProductPage: React.FC<BackofficeProductPageProps> = ({ id
         </Breadcrumbs>
       </Box>
 
-      <Paper sx={{ p: 3.5, borderRadius: 2, border: `1px solid ${UI_COLORS.border}`, boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}>
+      <ContentPaper sx={{ p: 3.5 }}>
         <Grid container spacing={4}>
           {/* Left — images */}
           <Grid size={{ xs: 12, md: 4 }}>
@@ -241,7 +241,7 @@ export const BackofficeProductPage: React.FC<BackofficeProductPageProps> = ({ id
             </Box>
           </>
         )}
-      </Paper>
+      </ContentPaper>
     </Box>
   )
 }

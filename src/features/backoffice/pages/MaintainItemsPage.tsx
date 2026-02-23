@@ -1,6 +1,5 @@
 import React from 'react'
 import Box from '@mui/material/Box'
-import Paper from '@mui/material/Paper'
 import TableContainer from '@mui/material/TableContainer'
 import CircularProgress from '@mui/material/CircularProgress'
 import Typography from '@mui/material/Typography'
@@ -10,7 +9,8 @@ import { ItemsToolbar } from '../components/ItemsToolbar'
 import { ItemsTable } from '../components/ItemsTable'
 import { AddItemModal } from '../components/AddItemModal'
 import { useDebounce } from '../../../hooks/useDebounce'
-import { BACKOFFICE_COLORS, UI_COLORS } from '../../../styles/theme'
+import { BACKOFFICE_COLORS } from '../../../styles/theme'
+import { ContentPaper } from '../../../shared/ui/ContentPaper'
 
 export const MaintainItemsPage: React.FC = () => {
   const { search, setSearch, selected, toggleSelect, toggleSelectAll, addOpen, setAddOpen } =
@@ -21,14 +21,7 @@ export const MaintainItemsPage: React.FC = () => {
 
   return (
     <Box sx={{ px: 6, py: 3 }}>
-      <Paper
-        sx={{
-          p: 3,
-          borderRadius: 2,
-          border: `1px solid ${UI_COLORS.border}`,
-          boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
-        }}
-      >
+      <ContentPaper sx={{ p: 3 }}>
         <ItemsToolbar search={search} onSearchChange={setSearch} onAddClick={() => setAddOpen(true)} />
 
         {isLoading && (
@@ -53,7 +46,7 @@ export const MaintainItemsPage: React.FC = () => {
             />
           </TableContainer>
         )}
-      </Paper>
+      </ContentPaper>
 
       <AddItemModal open={addOpen} onClose={() => setAddOpen(false)} />
     </Box>

@@ -5,6 +5,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 import { useRouter } from '@tanstack/react-router'
 import { slugToLabel } from '../../../utils/formatters'
 import { BRAND_COLORS } from '../../../styles/theme'
+import { ClickableText } from '../../../core/ui/ClickableText'
 
 interface BreadcrumbsProps {
   category: string
@@ -18,13 +19,13 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ category }) => {
       separator={<NavigateNextIcon fontSize="small" />}
       sx={{ mb: 2, fontSize: '0.8125rem' }}
     >
-      <Typography
+      <ClickableText
         component="span"
         onClick={() => router.history.push('/shop')}
-        sx={{ color: BRAND_COLORS.primary, fontSize: 'inherit', cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }}
+        sx={{ color: BRAND_COLORS.primary, fontSize: 'inherit' }}
       >
         Home
-      </Typography>
+      </ClickableText>
 
       {category ? (
         <Typography sx={{ fontSize: 'inherit', color: 'text.secondary' }}>

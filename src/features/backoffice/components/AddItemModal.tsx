@@ -3,7 +3,6 @@ import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
-import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
@@ -14,6 +13,7 @@ import { useAddItem } from '../lib/mutations'
 import type { AddItemForm } from '../types/backoffice'
 import { BACKOFFICE_COLORS } from '../../../styles/theme'
 import { slugToLabel } from '../../../utils/formatters'
+import { FlatButton } from '../../../shared/ui/FlatButton'
 
 const CATEGORIES = [
   'beauty', 'fragrances', 'skin-care', 'laptops', 'smartphones', 'tablets',
@@ -74,17 +74,17 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({ open, onClose }) => 
       </DialogContent>
 
       <DialogActions sx={{ px: 3, py: 2, gap: 1 }}>
-        <Button onClick={onClose} variant="outlined" color="inherit" sx={{ borderRadius: 1.5 }}>
+        <FlatButton onClick={onClose} variant="outlined" color="inherit">
           Cancel
-        </Button>
-        <Button
+        </FlatButton>
+        <FlatButton
           onClick={handleSubmit}
           variant="contained"
           disabled={!valid || isPending}
-          sx={{ bgcolor: BACKOFFICE_COLORS.primary, '&:hover': { bgcolor: BACKOFFICE_COLORS.primaryDark }, borderRadius: 1.5, boxShadow: 'none' }}
+          sx={{ bgcolor: BACKOFFICE_COLORS.primary, '&:hover': { bgcolor: BACKOFFICE_COLORS.primaryDark } }}
         >
           {isPending ? 'Adding…' : 'Add Item'}
-        </Button>
+        </FlatButton>
       </DialogActions>
     </Dialog>
   )

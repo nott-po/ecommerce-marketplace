@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import Box from '@mui/material/Box'
-import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import FormControl from '@mui/material/FormControl'
@@ -11,13 +10,14 @@ import RadioGroup from '@mui/material/RadioGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Radio from '@mui/material/Radio'
 import FormLabel from '@mui/material/FormLabel'
-import Button from '@mui/material/Button'
 import Breadcrumbs from '@mui/material/Breadcrumbs'
 import Link from '@mui/material/Link'
 import Divider from '@mui/material/Divider'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 import { useRouter } from '@tanstack/react-router'
 import { BACKOFFICE_COLORS, UI_COLORS } from '../../../styles/theme'
+import { FlatButton } from '../../../shared/ui/FlatButton'
+import { ContentPaper } from '../../../shared/ui/ContentPaper'
 
 const fieldSx = {
   '& .MuiOutlinedInput-root': {
@@ -70,7 +70,7 @@ export const AddUserPage: React.FC = () => {
         </Typography>
       </Breadcrumbs>
 
-      <Paper sx={{ p: 3.5, borderRadius: 2, border: `1px solid ${UI_COLORS.border}`, boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}>
+      <ContentPaper sx={{ p: 3.5 }}>
         <Typography sx={{ fontSize: '1.125rem', fontWeight: 700, mb: 3, color: UI_COLORS.textPrimary }}>
           Add New User
         </Typography>
@@ -178,26 +178,26 @@ export const AddUserPage: React.FC = () => {
 
         {/* Action buttons */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Button
+          <FlatButton
             variant="contained"
-            sx={{ bgcolor: BACKOFFICE_COLORS.primary, '&:hover': { bgcolor: BACKOFFICE_COLORS.primaryDark }, borderRadius: 1.5, boxShadow: 'none', minWidth: 88 }}
+            sx={{ bgcolor: BACKOFFICE_COLORS.primary, '&:hover': { bgcolor: BACKOFFICE_COLORS.primaryDark }, minWidth: 88 }}
           >
             Save
-          </Button>
-          <Button
+          </FlatButton>
+          <FlatButton
             variant="text"
             color="inherit"
-            sx={{ borderRadius: 1.5, minWidth: 88, color: UI_COLORS.textMedium }}
+            sx={{ minWidth: 88, color: UI_COLORS.textMedium }}
             onClick={() => router.history.back()}
           >
             Cancel
-          </Button>
+          </FlatButton>
           <Box sx={{ flex: 1 }} />
-          <Button variant="outlined" color="error" sx={{ borderRadius: 1.5, minWidth: 88 }}>
+          <FlatButton variant="outlined" color="error" sx={{ minWidth: 88 }}>
             Delete
-          </Button>
+          </FlatButton>
         </Box>
-      </Paper>
+      </ContentPaper>
     </Box>
   )
 }

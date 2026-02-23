@@ -1,12 +1,12 @@
 import React from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
 import InputBase from '@mui/material/InputBase'
 import SearchIcon from '@mui/icons-material/Search'
 import AddIcon from '@mui/icons-material/Add'
 import { styled } from '@mui/material/styles'
 import { BACKOFFICE_COLORS, UI_COLORS } from '../../../styles/theme'
+import { FlatButton } from '../../../shared/ui/FlatButton'
 
 const SearchBox = styled(Box)({
   display: 'flex',
@@ -43,24 +43,22 @@ export const ItemsToolbar: React.FC<ItemsToolbarProps> = ({ search, onSearchChan
         />
       </SearchBox>
 
-      <Button
+      <FlatButton
         variant="contained"
         startIcon={<AddIcon />}
         onClick={onAddClick}
         sx={{
           bgcolor: BACKOFFICE_COLORS.primary,
           '&:hover': { bgcolor: BACKOFFICE_COLORS.primaryDark },
-          borderRadius: 1.5,
           fontWeight: 600,
           fontSize: '0.875rem',
           px: 2,
           py: 0.875,
-          boxShadow: 'none',
           whiteSpace: 'nowrap',
         }}
       >
         Add an Item
-      </Button>
+      </FlatButton>
     </Box>
   </Box>
 )

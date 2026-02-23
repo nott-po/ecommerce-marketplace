@@ -24,4 +24,5 @@ dist/
 # IDE
 .vscode/*
 !.vscode/extensions.json
-.idea
+# JetBrains IDE
+.idea/

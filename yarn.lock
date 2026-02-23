@@ -1271,7 +1271,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/router-core@npm:1.160.0, @tanstack/router-core@npm:^1.160.0":
+"@tanstack/router-core@npm:1.160.0":
   version: 1.160.0
   resolution: "@tanstack/router-core@npm:1.160.0"
   dependencies:
@@ -1789,7 +1789,6 @@ __metadata:
     "@tanstack/react-query": "npm:^5.90.21"
     "@tanstack/react-query-devtools": "npm:^5.91.3"
     "@tanstack/react-router": "npm:^1.117.1"
-    "@tanstack/router-core": "npm:^1.160.0"
     "@tanstack/router-devtools": "npm:^1.117.1"
     "@tanstack/router-plugin": "npm:^1.117.2"
     "@types/react": "npm:^19.0.8"

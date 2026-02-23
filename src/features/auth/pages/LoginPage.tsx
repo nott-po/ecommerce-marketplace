@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography'
 import Alert from '@mui/material/Alert'
 import Divider from '@mui/material/Divider'
 import CircularProgress from '@mui/material/CircularProgress'
+import { styled } from '@mui/material/styles'
 import { useAuth } from '../AuthContext'
 import { useRouter } from '@tanstack/react-router'
 import { BACKOFFICE_COLORS, BRAND_COLORS, UI_COLORS } from '../../../styles/theme'
@@ -17,12 +18,50 @@ const DEMO_ACCOUNTS = [
   { label: 'Admin account', username: 'emilys', password: 'emilyspass', role: 'admin' },
 ]
 
-const fieldSx = {
+const LoginPageRoot = styled(Box)(({ theme }) => ({
+  minHeight: '100vh',
+  backgroundColor: UI_COLORS.bgPage,
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: theme.spacing(0, 2),
+}))
+
+const LoginTextField = styled(TextField)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
-    borderRadius: 1.5,
-    bgcolor: UI_COLORS.bgSubtle,
+    borderRadius: (theme.shape.borderRadius as number) * 1.5,
+    backgroundColor: UI_COLORS.bgSubtle,
   },
-}
+}))
+
+const LoginSubmitButton = styled(FlatButton)(({ theme }) => ({
+  fontWeight: 600,
+  fontSize: theme.typography.labelLg.fontSize,
+}))
+
+const DemoAccountLabel = styled(Typography)(({ theme }) => ({
+  fontSize: theme.typography.body2.fontSize,
+  fontWeight: 600,
+  color: UI_COLORS.textMedium,
+}))
+
+const DemoAccountCredentials = styled(Typography)(({ theme }) => ({
+  fontSize: theme.typography.caption.fontSize,
+  color: UI_COLORS.textTertiary,
+}))
+
+const RoleBadge = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'isAdmin',
+})<{ isAdmin: boolean }>(({ theme, isAdmin }) => ({
+  fontSize: theme.typography.caption.fontSize,
+  fontWeight: 600,
+  padding: theme.spacing(0.25, 1),
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: isAdmin ? BACKOFFICE_COLORS.navBg : BRAND_COLORS.saleBg,
+  color: isAdmin ? 'white' : BRAND_COLORS.primary,
+  border: isAdmin ? 'none' : `1px solid ${BRAND_COLORS.primaryBorder}`,
+}))
 
 export const LoginPage: React.FC = () => {
   const { login } = useAuth()
@@ -32,7 +71,7 @@ export const LoginPage: React.FC = () => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!username.trim() || !password.trim()) return
     setError('')
@@ -55,17 +94,7 @@ export const LoginPage: React.FC = () => {
   }
 
   return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        bgcolor: UI_COLORS.bgPage,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        px: 2,
-      }}
-    >
+    <LoginPageRoot>
       {/* Logo */}
       <Box
         component="img"
@@ -89,17 +118,16 @@ export const LoginPage: React.FC = () => {
         )}
 
         <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <TextField
+          <LoginTextField
             label="Username"
             fullWidth
             size="small"
             autoComplete="username"
             value={username}
             onChange={e => setUsername(e.target.value)}
-            sx={fieldSx}
             autoFocus
           />
-          <TextField
+          <LoginTextField
             label="Password"
             type="password"
             fullWidth
@@ -107,17 +135,16 @@ export const LoginPage: React.FC = () => {
             autoComplete="current-password"
             value={password}
             onChange={e => setPassword(e.target.value)}
-            sx={fieldSx}
           />
-          <FlatButton
+          <LoginSubmitButton
             type="submit"
             variant="contained"
             fullWidth
             disabled={loading || !username.trim() || !password.trim()}
-            sx={{ mt: 0.5, py: 1.1, fontWeight: 600, fontSize: '0.9375rem' }}
+            sx={{ mt: 0.5, py: 1.1 }}
           >
             {loading ? <CircularProgress size={20} sx={{ color: 'white' }} /> : 'Sign In'}
-          </FlatButton>
+          </LoginSubmitButton>
         </Box>
 
         <Divider sx={{ my: 3 }}>
@@ -130,31 +157,16 @@ export const LoginPage: React.FC = () => {
           {DEMO_ACCOUNTS.map(acc => (
             <ClickableRow key={acc.username} onClick={() => fillDemo(acc.username, acc.password)}>
               <Box>
-                <Typography sx={{ fontSize: '0.8125rem', fontWeight: 600, color: UI_COLORS.textMedium }}>
-                  {acc.label}
-                </Typography>
-                <Typography sx={{ fontSize: '0.75rem', color: UI_COLORS.textTertiary }}>
+                <DemoAccountLabel>{acc.label}</DemoAccountLabel>
+                <DemoAccountCredentials>
                   {acc.username} / {acc.password}
-                </Typography>
+                </DemoAccountCredentials>
               </Box>
-              <Typography
-                sx={{
-                  fontSize: '0.75rem',
-                  fontWeight: 600,
-                  px: 1,
-                  py: 0.25,
-                  borderRadius: 1,
-                  bgcolor: acc.role === 'admin' ? BACKOFFICE_COLORS.navBg : BRAND_COLORS.saleBg,
-                  color: acc.role === 'admin' ? 'white' : BRAND_COLORS.primary,
-                  border: acc.role === 'admin' ? 'none' : `1px solid ${BRAND_COLORS.primaryBorder}`,
-                }}
-              >
-                {acc.role}
-              </Typography>
+              <RoleBadge isAdmin={acc.role === 'admin'}>{acc.role}</RoleBadge>
             </ClickableRow>
           ))}
         </Box>
       </ContentPaper>
-    </Box>
+    </LoginPageRoot>
   )
 }

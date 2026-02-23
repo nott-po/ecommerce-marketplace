@@ -20,6 +20,58 @@ const SidebarRoot = styled(Box)({
   paddingBottom: 24,
 })
 
+const CategoriesLabel = styled(Typography)(({ theme }) => ({
+  fontWeight: 700,
+  letterSpacing: '0.08em',
+  color: theme.palette.text.secondary,
+  textTransform: 'uppercase',
+}))
+
+const SidebarRootButton = styled(ListItemButton)(({ theme }) => ({
+  borderRadius: theme.shape.borderRadius,
+  paddingTop: theme.spacing(0.75),
+  paddingBottom: theme.spacing(0.75),
+  '&.Mui-selected': {
+    backgroundColor: BRAND_COLORS.primaryAlpha12,
+    color: BRAND_COLORS.primary,
+  },
+}))
+
+const SidebarGroupButton = styled(ListItemButton)(({ theme }) => ({
+  paddingTop: theme.spacing(0.75),
+  paddingBottom: theme.spacing(0.75),
+  paddingLeft: theme.spacing(2),
+  paddingRight: theme.spacing(2),
+  borderRadius: theme.shape.borderRadius,
+}))
+
+const SidebarLeafButton = styled(ListItemButton, {
+  shouldForwardProp: (prop) => prop !== 'depth',
+})<{ depth: number }>(({ theme, depth }) => ({
+  paddingLeft: theme.spacing(2 + depth * 1.5),
+  paddingTop: theme.spacing(0.5),
+  paddingBottom: theme.spacing(0.5),
+  borderRadius: theme.shape.borderRadius,
+  '&.Mui-selected': {
+    backgroundColor: BRAND_COLORS.primaryAlpha12,
+    color: BRAND_COLORS.primary,
+    '&:hover': { backgroundColor: BRAND_COLORS.primaryAlpha12 },
+  },
+}))
+
+const SidebarItemText = styled(ListItemText)(({ theme }) => ({
+  '& .MuiListItemText-primary': {
+    fontSize: theme.typography.body2.fontSize,
+  },
+}))
+
+const SidebarGroupText = styled(ListItemText)(({ theme }) => ({
+  '& .MuiListItemText-primary': {
+    fontSize: theme.typography.labelMd.fontSize,
+    fontWeight: 600,
+  },
+}))
+
 interface CategorySidebarProps {
   selectedCategory: string
   onSelect: (slug: string) => void
@@ -39,8 +91,9 @@ const LeafItem: React.FC<LeafItemProps> = ({ leaf, depth, selectedCategory, onSe
 
   return (
     <>
-      <ListItemButton
+      <SidebarLeafButton
         selected={isSelected}
+        depth={depth}
         onClick={() => {
           if (hasChildren) {
             setOpen(prev => !prev)
@@ -48,21 +101,11 @@ const LeafItem: React.FC<LeafItemProps> = ({ leaf, depth, selectedCategory, onSe
             onSelect(isSelected ? '' : leaf.slug)
           }
         }}
-        sx={{
-          pl: 2 + depth * 1.5,
-          py: 0.5,
-          borderRadius: 1,
-          '&.Mui-selected': {
-            bgcolor: BRAND_COLORS.primaryAlpha12,
-            color: BRAND_COLORS.primary,
-            '&:hover': { bgcolor: BRAND_COLORS.primaryAlpha12 },
-          },
-        }}
       >
-        <ListItemText
+        <SidebarItemText
           primary={leaf.label}
           slotProps={{
-            primary: { style: { fontSize: '0.825rem', fontWeight: isSelected ? 600 : 400 } },
+            primary: { style: { fontWeight: isSelected ? 600 : 400 } },
           }}
         />
         {hasChildren ? (
@@ -72,7 +115,7 @@ const LeafItem: React.FC<LeafItemProps> = ({ leaf, depth, selectedCategory, onSe
             <ExpandMoreIcon fontSize="small" />
           )
         ) : null}
-      </ListItemButton>
+      </SidebarLeafButton>
 
       {hasChildren && (
         <Collapse in={open} timeout="auto">
@@ -104,18 +147,10 @@ const GroupItem: React.FC<GroupItemProps> = ({ group, selectedCategory, onSelect
 
   return (
     <>
-      <ListItemButton
-        onClick={() => setOpen(prev => !prev)}
-        sx={{ py: 0.75, px: 2, borderRadius: 1 }}
-      >
-        <ListItemText
-          primary={group.label}
-          slotProps={{
-            primary: { style: { fontSize: '0.875rem', fontWeight: 600 } },
-          }}
-        />
+      <SidebarGroupButton onClick={() => setOpen(prev => !prev)}>
+        <SidebarGroupText primary={group.label} />
         {open ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
-      </ListItemButton>
+      </SidebarGroupButton>
 
       <Collapse in={open} timeout="auto">
         <List disablePadding>
@@ -137,41 +172,21 @@ const GroupItem: React.FC<GroupItemProps> = ({ group, selectedCategory, onSelect
 export const CategorySidebar: React.FC<CategorySidebarProps> = ({ selectedCategory, onSelect }) => (
   <SidebarRoot>
     <Box sx={{ px: 2, pt: 2.5, pb: 1 }}>
-      <Typography
-        variant="caption"
-        sx={{
-          fontWeight: 700,
-          letterSpacing: '0.08em',
-          color: 'text.secondary',
-          textTransform: 'uppercase',
-        }}
-      >
-        Categories
-      </Typography>
+      <CategoriesLabel variant="caption">Categories</CategoriesLabel>
     </Box>
 
     <List disablePadding sx={{ px: 1 }}>
-      <ListItemButton
+      <SidebarRootButton
         selected={selectedCategory === ''}
         onClick={() => onSelect('')}
-        sx={{
-          borderRadius: 1,
-          py: 0.75,
-          '&.Mui-selected': {
-            bgcolor: BRAND_COLORS.primaryAlpha12,
-            color: BRAND_COLORS.primary,
-          },
-        }}
       >
-        <ListItemText
+        <SidebarGroupText
           primary="All Products"
           slotProps={{
-            primary: {
-              style: { fontSize: '0.875rem', fontWeight: selectedCategory === '' ? 600 : 400 },
-            },
+            primary: { style: { fontWeight: selectedCategory === '' ? 600 : 400 } },
           }}
         />
-      </ListItemButton>
+      </SidebarRootButton>
 
       {CATEGORY_HIERARCHY.map(group => (
         <GroupItem

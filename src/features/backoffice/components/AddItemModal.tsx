@@ -9,6 +9,7 @@ import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
+import { styled } from '@mui/material/styles'
 import { useAddItem } from '../lib/mutations'
 import type { AddItemForm } from '../types/backoffice'
 import { BACKOFFICE_COLORS } from '../../../styles/theme'
@@ -24,10 +25,27 @@ const CATEGORIES = [
 
 const EMPTY: AddItemForm = { title: '', description: '', price: 0, category: '', stock: 1 }
 
-const fieldSx = {
-  '& .MuiOutlinedInput-root': { borderRadius: 1.5 },
-  '& label': { fontSize: '0.875rem' },
-}
+const ModalDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiDialog-paper': {
+    borderRadius: (theme.shape.borderRadius as number) * 2,
+  },
+}))
+
+const ModalTitle = styled(DialogTitle)({
+  fontWeight: 700,
+  fontSize: '1.125rem',
+  paddingBottom: 8,
+})
+
+const ModalTextField = styled(TextField)(({ theme }) => ({
+  '& .MuiOutlinedInput-root': { borderRadius: (theme.shape.borderRadius as number) * 1.5 },
+  '& label': { fontSize: theme.typography.labelMd.fontSize },
+}))
+
+const ModalFormControl = styled(FormControl)(({ theme }) => ({
+  '& .MuiOutlinedInput-root': { borderRadius: (theme.shape.borderRadius as number) * 1.5 },
+  '& label': { fontSize: theme.typography.labelMd.fontSize },
+}))
 
 interface AddItemModalProps {
   open: boolean
@@ -51,26 +69,26 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({ open, onClose }) => 
   const valid = form.title.trim() !== '' && form.category !== '' && form.price > 0
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm" PaperProps={{ sx: { borderRadius: 2 } }}>
-      <DialogTitle sx={{ fontWeight: 700, fontSize: '1.125rem', pb: 1 }}>Add an Item</DialogTitle>
+    <ModalDialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+      <ModalTitle>Add an Item</ModalTitle>
 
       <DialogContent dividers sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 2.5 }}>
-        <TextField label="Title *" fullWidth size="small" value={form.title} onChange={e => set({ title: e.target.value })} sx={fieldSx} />
-        <TextField label="Description" fullWidth multiline rows={3} size="small" value={form.description} onChange={e => set({ description: e.target.value })} sx={fieldSx} />
+        <ModalTextField label="Title *" fullWidth size="small" value={form.title} onChange={e => set({ title: e.target.value })} />
+        <ModalTextField label="Description" fullWidth multiline rows={3} size="small" value={form.description} onChange={e => set({ description: e.target.value })} />
         <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
-          <TextField label="Price (€) *" size="small" type="number" value={form.price || ''} onChange={e => set({ price: Number(e.target.value) })} inputProps={{ min: 0, step: 0.01 }} sx={fieldSx} />
-          <TextField label="Stock" size="small" type="number" value={form.stock} onChange={e => set({ stock: Number(e.target.value) })} inputProps={{ min: 1 }} sx={fieldSx} />
+          <ModalTextField label="Price (€) *" size="small" type="number" value={form.price || ''} onChange={e => set({ price: Number(e.target.value) })} inputProps={{ min: 0, step: 0.01 }} />
+          <ModalTextField label="Stock" size="small" type="number" value={form.stock} onChange={e => set({ stock: Number(e.target.value) })} inputProps={{ min: 1 }} />
         </Box>
-        <FormControl fullWidth size="small" sx={fieldSx}>
+        <ModalFormControl fullWidth size="small">
           <InputLabel>Category *</InputLabel>
-          <Select value={form.category} label="Category *" onChange={e => set({ category: e.target.value })} sx={{ borderRadius: 1.5 }}>
+          <Select value={form.category} label="Category *" onChange={e => set({ category: e.target.value })}>
             {CATEGORIES.map(c => (
               <MenuItem key={c} value={c}>
                 {slugToLabel(c)}
               </MenuItem>
             ))}
           </Select>
-        </FormControl>
+        </ModalFormControl>
       </DialogContent>
 
       <DialogActions sx={{ px: 3, py: 2, gap: 1 }}>
@@ -86,6 +104,6 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({ open, onClose }) => 
           {isPending ? 'Adding…' : 'Add Item'}
         </FlatButton>
       </DialogActions>
-    </Dialog>
+    </ModalDialog>
   )
 }

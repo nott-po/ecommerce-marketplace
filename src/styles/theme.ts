@@ -1,4 +1,23 @@
 import { createTheme } from '@mui/material/styles'
+import type { CSSProperties } from 'react'
+
+// ─── Custom typography variant declarations ────────────────────────────────────
+declare module '@mui/material/styles' {
+  interface TypographyVariants {
+    labelMd: CSSProperties  // 0.875rem — table cells, form labels
+    labelLg: CSSProperties  // 0.9375rem — button text, prominent labels
+  }
+  interface TypographyVariantsOptions {
+    labelMd?: CSSProperties
+    labelLg?: CSSProperties
+  }
+}
+declare module '@mui/material/Typography' {
+  interface TypographyPropsVariantOverrides {
+    labelMd: true
+    labelLg: true
+  }
+}
 
 // ─── Shop brand colors ────────────────────────────────────────────────────────
 export const BRAND_COLORS = {
@@ -76,7 +95,9 @@ export const theme = createTheme({
     h6:        { fontWeight: 600 },
     subtitle1: { fontWeight: 500 },
     subtitle2: { fontWeight: 600 },
-    body2:     { fontSize: '0.8125rem' },
+    body2:     { fontSize: '0.8125rem' }, // 13px — small labels, chips, breadcrumbs
+    labelMd:   { fontSize: '0.875rem'  }, // 14px — table cells, form labels
+    labelLg:   { fontSize: '0.9375rem' }, // 15px — button text
   },
   shape: { borderRadius: 8 },
   components: {

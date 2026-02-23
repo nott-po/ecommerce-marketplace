@@ -1,6 +1,7 @@
 import React from 'react'
 import Box from '@mui/material/Box'
 import Chip from '@mui/material/Chip'
+import { styled } from '@mui/material/styles'
 import { slugToLabel } from '../../../utils/formatters'
 import type { PriceRange, ConditionFilter } from './FilterBar'
 import { ClickableText } from '../../../core/ui/ClickableText'
@@ -12,6 +13,17 @@ const PRICE_LABELS: Record<PriceRange, string> = {
   '50to100': '€50 – €100',
   over100: 'Over €100',
 }
+
+const FilterChip = styled(Chip)(({ theme }) => ({
+  height: 26,
+  fontSize: theme.typography.body2.fontSize,
+  borderRadius: theme.shape.borderRadius,
+}))
+
+const ClearAllText = styled(ClickableText)(({ theme }) => ({
+  fontSize: theme.typography.body2.fontSize,
+  color: theme.palette.primary.main,
+})) as typeof ClickableText
 
 interface ActiveFiltersProps {
   search: string
@@ -50,23 +62,18 @@ export const ActiveFilters: React.FC<ActiveFiltersProps> = ({
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, alignItems: 'center', mt: 1 }}>
       {filters.map(f => (
-        <Chip
+        <FilterChip
           key={f.key}
           label={f.label}
           size="small"
           onDelete={() => onRemove(f.key)}
-          sx={{ height: 26, fontSize: '0.8rem', borderRadius: 1 }}
         />
       ))}
 
       {filters.length > 1 && (
-        <ClickableText
-          component="span"
-          sx={{ fontSize: '0.8rem', color: 'primary.main', ml: 0.5 }}
-          onClick={onClearAll}
-        >
+        <ClearAllText component="span" sx={{ ml: 0.5 }} onClick={onClearAll}>
           Clear all
-        </ClickableText>
+        </ClearAllText>
       )}
     </Box>
   )

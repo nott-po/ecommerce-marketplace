@@ -34,6 +34,7 @@ const SidebarRootButton = styled(ListItemButton)(({ theme }) => ({
   '&.Mui-selected': {
     backgroundColor: BRAND_COLORS.primaryAlpha12,
     color: BRAND_COLORS.primary,
+    '& .MuiListItemText-primary': { fontWeight: 600 },
   },
 }))
 
@@ -56,6 +57,7 @@ const SidebarLeafButton = styled(ListItemButton, {
     backgroundColor: BRAND_COLORS.primaryAlpha12,
     color: BRAND_COLORS.primary,
     '&:hover': { backgroundColor: BRAND_COLORS.primaryAlpha12 },
+    '& .MuiListItemText-primary': { fontWeight: 600 },
   },
 }))
 
@@ -102,12 +104,7 @@ const LeafItem: React.FC<LeafItemProps> = ({ leaf, depth, selectedCategory, onSe
           }
         }}
       >
-        <SidebarItemText
-          primary={leaf.label}
-          slotProps={{
-            primary: { style: { fontWeight: isSelected ? 600 : 400 } },
-          }}
-        />
+        <SidebarItemText primary={leaf.label} />
         {hasChildren ? (
           open ? (
             <ExpandLessIcon fontSize="small" />
@@ -180,12 +177,7 @@ export const CategorySidebar: React.FC<CategorySidebarProps> = ({ selectedCatego
         selected={selectedCategory === ''}
         onClick={() => onSelect('')}
       >
-        <SidebarGroupText
-          primary="All Products"
-          slotProps={{
-            primary: { style: { fontWeight: selectedCategory === '' ? 600 : 400 } },
-          }}
-        />
+        <SidebarGroupText primary="All Products" />
       </SidebarRootButton>
 
       {CATEGORY_HIERARCHY.map(group => (

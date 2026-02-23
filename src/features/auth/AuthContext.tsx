@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useState } from 'react'
-import { API_BASE_URL } from '../../utils/constants'
-import type { AuthContextValue, AuthUser, DummyJsonLoginResponse, DummyJsonMeResponse, UserRole } from './types'
+import { loginUser } from '../../api/endpoints/auth'
+import type { AuthContextValue, AuthUser } from './types'
 
 const STORAGE_TOKEN = 'auth_token'
 const STORAGE_ROLE = 'auth_role'
@@ -22,44 +22,15 @@ const AuthContext = createContext<AuthContextValue | null>(null)
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [{ user, token }, setAuth] = useState(readStorage)
 
-  const login = useCallback(async (username: string, password: string) => {
-    const loginRes = await fetch(`${API_BASE_URL}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password, expiresInMins: 60 }),
-    })
+  const login = useCallback(async (username: string, password: string): Promise<AuthUser> => {
+    const { user: authUser, token: accessToken } = await loginUser(username, password)
 
-    if (!loginRes.ok) {
-      const err = await loginRes.json().catch(() => ({})) as Record<string, unknown>
-      throw new Error(typeof err.message === 'string' ? err.message : 'Invalid credentials')
-    }
-
-    const loginData = (await loginRes.json()) as DummyJsonLoginResponse
-
-    const meRes = await fetch(`${API_BASE_URL}/auth/me`, {
-      headers: { Authorization: `Bearer ${loginData.accessToken}` },
-    })
-
-    if (!meRes.ok) throw new Error('Failed to load user profile')
-
-    const meData = (await meRes.json()) as DummyJsonMeResponse
-    const role: UserRole = meData.role === 'admin' ? 'admin' : 'user'
-
-    const authUser: AuthUser = {
-      id: meData.id,
-      username: meData.username,
-      email: meData.email,
-      firstName: meData.firstName,
-      lastName: meData.lastName,
-      image: meData.image,
-      role,
-    }
-
-    localStorage.setItem(STORAGE_TOKEN, loginData.accessToken)
-    localStorage.setItem(STORAGE_ROLE, role)
+    localStorage.setItem(STORAGE_TOKEN, accessToken)
+    localStorage.setItem(STORAGE_ROLE, authUser.role)
     localStorage.setItem(STORAGE_USER, JSON.stringify(authUser))
 
-    setAuth({ user: authUser, token: loginData.accessToken })
+    setAuth({ user: authUser, token: accessToken })
+    return authUser
   }, [])
 
   const logout = useCallback(() => {

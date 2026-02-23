@@ -6,12 +6,12 @@ import Alert from '@mui/material/Alert'
 import Divider from '@mui/material/Divider'
 import CircularProgress from '@mui/material/CircularProgress'
 import { styled } from '@mui/material/styles'
-import { useAuth } from '../AuthContext'
 import { useRouter } from '@tanstack/react-router'
 import { BACKOFFICE_COLORS, BRAND_COLORS, UI_COLORS } from '../../../styles/theme'
 import { FlatButton } from '../../../shared/ui/FlatButton'
 import { ContentPaper } from '../../../shared/ui/ContentPaper'
 import { ClickableRow } from '../../../shared/ui/ClickableRow'
+import { useLoginMutation } from '../lib/queries'
 
 const DEMO_ACCOUNTS = [
   { label: 'User account', username: 'averyp', password: 'averyppass', role: 'user' },
@@ -64,38 +64,27 @@ const RoleBadge = styled(Typography, {
 }))
 
 export const LoginPage: React.FC = () => {
-  const { login } = useAuth()
   const router = useRouter()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const { mutate: login, isPending, error } = useLoginMutation()
 
-  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!username.trim() || !password.trim()) return
-    setError('')
-    setLoading(true)
-    try {
-      await login(username.trim(), password.trim())
-      const role = localStorage.getItem('auth_role')
-      router.history.push(role === 'admin' ? '/backoffice' : '/shop')
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed. Please try again.')
-    } finally {
-      setLoading(false)
-    }
+    login(
+      { username: username.trim(), password: password.trim() },
+      { onSuccess: (user) => router.history.push(user.role === 'admin' ? '/backoffice' : '/shop') },
+    )
   }
 
   const fillDemo = (u: string, p: string) => {
     setUsername(u)
     setPassword(p)
-    setError('')
   }
 
   return (
     <LoginPageRoot>
-      {/* Logo */}
       <Box
         component="img"
         src="/logo2.svg"
@@ -113,7 +102,7 @@ export const LoginPage: React.FC = () => {
 
         {error && (
           <Alert severity="error" sx={{ mb: 2, borderRadius: 1.5 }}>
-            {error}
+            {error.message}
           </Alert>
         )}
 
@@ -140,10 +129,10 @@ export const LoginPage: React.FC = () => {
             type="submit"
             variant="contained"
             fullWidth
-            disabled={loading || !username.trim() || !password.trim()}
+            disabled={isPending || !username.trim() || !password.trim()}
             sx={{ mt: 0.5, py: 1.1 }}
           >
-            {loading ? <CircularProgress size={20} sx={{ color: 'white' }} /> : 'Sign In'}
+            {isPending ? <CircularProgress size={20} sx={{ color: 'white' }} /> : 'Sign In'}
           </LoginSubmitButton>
         </Box>
 

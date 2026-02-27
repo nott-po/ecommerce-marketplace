@@ -1,7 +1,11 @@
-import { createFileRoute, useRouter } from '@tanstack/react-router'
+import { createFileRoute, useRouter, redirect } from '@tanstack/react-router'
 import { ProductDetailPage } from '../../features/shop/pages/ProductDetailPage'
 
 export const Route = createFileRoute('/shop/product/$id')({
+  beforeLoad: ({ params }) => {
+    const numId = parseInt(params.id, 10)
+    if (isNaN(numId) || numId <= 0) throw redirect({ href: '/shop/' })
+  },
   component: ProductDetailRoute,
 })
 

@@ -1,53 +1,57 @@
-import React, { useState, useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import Box from '@mui/material/Box'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import Divider from '@mui/material/Divider'
 import { CategorySidebar } from '../components/CategorySidebar'
 import { Breadcrumbs } from '../components/Breadcrumbs'
-import { FilterBar, DEFAULT_FILTER_VALUES, type FilterBarValues } from '../components/FilterBar'
+import { FilterBar, type FilterBarValues, type PriceRange, type ConditionFilter } from '../components/FilterBar'
 import { ActiveFilters } from '../components/ActiveFilters'
 import { SortControls } from '../components/SortControls'
 import { ProductGrid } from '../components/ProductGrid'
 import { useProducts } from '../lib/queries'
 import { useProductFilters } from '../hooks/useProductFilters'
-import { GENDER_TABS, EXCLUDED_CATEGORIES, PRODUCTS_PAGE_SIZE } from '../../../utils/constants'
+import { GENDER_TABS, EXCLUDED_CATEGORIES } from '../../../utils/constants'
 import { UI_COLORS } from '../../../styles/theme'
 
-// Exported so route files can import this type without circular deps
 export interface ShopSearchParams {
   q: string
   category: string
   page: number
   sort: string
   order: 'asc' | 'desc'
+  onSale: boolean
+  priceRange: PriceRange
+  condition: ConditionFilter
+  minRating: number
 }
 
 interface ShopPageProps {
   searchParams: ShopSearchParams
   onUpdateSearch: (updates: Partial<ShopSearchParams>) => void
+  onNavigate: (id: number) => void
 }
 
-export const ShopPage: React.FC<ShopPageProps> = ({ searchParams, onUpdateSearch }) => {
-  const { q, category, page } = searchParams
+export const ShopPage: React.FC<ShopPageProps> = ({ searchParams, onUpdateSearch, onNavigate }) => {
+  const { q, category, page, sort, order } = searchParams
 
-  const [filterValues, setFilterValues] = useState<FilterBarValues>(DEFAULT_FILTER_VALUES)
+  const filterValues: FilterBarValues = {
+    sort,
+    order,
+    onSale: searchParams.onSale,
+    priceRange: searchParams.priceRange,
+    condition: searchParams.condition,
+    minRating: searchParams.minRating,
+  }
 
-  const filters = useProductFilters({
-    q,
-    category,
-    page,
-    sort: filterValues.sort,
-    order: filterValues.order,
-  })
+  const filters = useProductFilters({ q, category, page, sort, order })
 
   const { data, isLoading, isError, refetch } = useProducts(filters)
 
   const products = data?.products ?? []
 
-  // Client-side filtering
-  const visibleProducts = products.filter(p => {
-    // When browsing all products, hide excluded categories (vehicles, groceries)
+  // Client-side filtering — memoized so it only re-runs when products or filter values change
+  const visibleProducts = useMemo(() => products.filter(p => {
     if (!category && EXCLUDED_CATEGORIES.has(p.category)) return false
     if (filterValues.onSale && !(p.discountPercentage > 0)) return false
     if (filterValues.condition && p.availabilityStatus !== filterValues.condition) return false
@@ -60,7 +64,7 @@ export const ShopPage: React.FC<ShopPageProps> = ({ searchParams, onUpdateSearch
       if (pr === 'over100' && p.price <= 100) return false
     }
     return true
-  })
+  }), [products, category, filterValues])
 
   const setCategory = useCallback(
     (cat: string) => onUpdateSearch({ category: cat, page: 0 }),
@@ -76,17 +80,16 @@ export const ShopPage: React.FC<ShopPageProps> = ({ searchParams, onUpdateSearch
     (key: string) => {
       if (key === 'search') onUpdateSearch({ q: '', page: 0 })
       else if (key === 'category') onUpdateSearch({ category: '', page: 0 })
-      else if (key === 'onSale') { setFilterValues(prev => ({ ...prev, onSale: false })); if (page > 0) onUpdateSearch({ page: 0 }) }
-      else if (key === 'priceRange') { setFilterValues(prev => ({ ...prev, priceRange: '' })); if (page > 0) onUpdateSearch({ page: 0 }) }
-      else if (key === 'condition') { setFilterValues(prev => ({ ...prev, condition: '' })); if (page > 0) onUpdateSearch({ page: 0 }) }
-      else if (key === 'minRating') { setFilterValues(prev => ({ ...prev, minRating: 0 })); if (page > 0) onUpdateSearch({ page: 0 }) }
+      else if (key === 'onSale') onUpdateSearch({ onSale: false, page: 0 })
+      else if (key === 'priceRange') onUpdateSearch({ priceRange: '', page: 0 })
+      else if (key === 'condition') onUpdateSearch({ condition: '', page: 0 })
+      else if (key === 'minRating') onUpdateSearch({ minRating: 0, page: 0 })
     },
-    [onUpdateSearch, page],
+    [onUpdateSearch],
   )
 
   const handleClearAll = useCallback(() => {
-    onUpdateSearch({ q: '', category: '', page: 0 })
-    setFilterValues(DEFAULT_FILTER_VALUES)
+    onUpdateSearch({ q: '', category: '', page: 0, onSale: false, priceRange: '', condition: '', minRating: 0 })
   }, [onUpdateSearch])
 
   const tabIndex = GENDER_TABS.findIndex(t => t.category === category)
@@ -138,17 +141,16 @@ export const ShopPage: React.FC<ShopPageProps> = ({ searchParams, onUpdateSearch
 
       {/* Sidebar + content */}
       <Box sx={{ display: 'flex', flex: 1, bgcolor: UI_COLORS.bgPage }}>
-        <CategorySidebar selectedCategory={category} onSelect={setCategory} />
+        <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          <CategorySidebar selectedCategory={category} onSelect={setCategory} />
+        </Box>
 
         <Box sx={{ flex: 1, p: 3, minWidth: 0 }}>
           <Breadcrumbs category={category} />
 
           <FilterBar
             values={filterValues}
-            onChange={(newValues) => {
-              setFilterValues(newValues)
-              if (page > 0) onUpdateSearch({ page: 0 })
-            }}
+            onChange={(newValues) => onUpdateSearch({ ...newValues, page: 0 })}
           />
 
           <ActiveFilters
@@ -164,17 +166,23 @@ export const ShopPage: React.FC<ShopPageProps> = ({ searchParams, onUpdateSearch
 
           <Divider sx={{ my: 1.5 }} />
 
-          <SortControls total={visibleProducts.length} />
+          {/* Show API total only when client-side filters aren't further narrowing the page */}
+          <SortControls total={
+            (filterValues.onSale || filterValues.priceRange || filterValues.condition || filterValues.minRating > 0)
+              ? undefined
+              : (data?.total ?? 0)
+          } />
 
           <Box sx={{ mt: 2 }}>
             <ProductGrid
-              products={visibleProducts.slice(page * PRODUCTS_PAGE_SIZE, (page + 1) * PRODUCTS_PAGE_SIZE)}
-              total={visibleProducts.length}
+              products={visibleProducts}
+              total={data?.total ?? 0}
               page={page}
               isLoading={isLoading}
               isError={isError}
               onPageChange={setPage}
               onRetry={() => void refetch()}
+              onNavigate={onNavigate}
             />
           </Box>
         </Box>

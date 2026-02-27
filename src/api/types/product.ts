@@ -58,7 +58,6 @@ export interface ProductFilters {
   order: 'asc' | 'desc'
   limit: number
   skip: number
-  onSale: boolean
 }
 
 export interface CategoryItem {

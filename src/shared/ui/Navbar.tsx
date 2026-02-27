@@ -12,7 +12,6 @@ import Typography from '@mui/material/Typography'
 import { styled } from '@mui/material/styles'
 import SearchIcon from '@mui/icons-material/Search'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
-import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined'
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
 import { Logo } from './Logo'
 import { useFavorites } from '../../hooks/useFavorites'
@@ -48,7 +47,7 @@ export const Navbar: React.FC = () => {
   const [searchValue, setSearchValue] = useState('')
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
 
-  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSearchSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
     const q = encodeURIComponent(searchValue.trim())
     router.history.push(`/shop?q=${q}&category=&page=0`)
@@ -81,20 +80,13 @@ export const Navbar: React.FC = () => {
         <Box sx={{ flexGrow: 1 }} />
 
         <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 3, alignItems: 'center' }}>
-          <NavLink>About us</NavLink>
-          <NavLink>All shops</NavLink>
-          <NavLink>Become a merchant</NavLink>
+          <NavLink onClick={() => router.history.push('/about')}>About us</NavLink>
         </Box>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
           <IconButton size="small" sx={{ color: '#fff' }}>
             <Badge badgeContent={favorites.size} color="error" max={99}>
               <FavoriteBorderIcon />
-            </Badge>
-          </IconButton>
-          <IconButton size="small" sx={{ color: '#fff' }}>
-            <Badge badgeContent={0} color="error" max={99}>
-              <ShoppingBagOutlinedIcon />
             </Badge>
           </IconButton>
           <IconButton size="small" sx={{ color: '#fff' }} onClick={e => setAnchorEl(e.currentTarget)}>

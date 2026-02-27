@@ -20,7 +20,7 @@ export const MaintainItemsPage: React.FC = () => {
   const { data: items = [], isLoading, isError } = useBackofficeItems(debouncedSearch)
 
   return (
-    <Box sx={{ px: 6, py: 3 }}>
+    <Box sx={{ px: { xs: 2, sm: 4, md: 6 }, py: 3 }}>
       <ContentPaper sx={{ p: 3 }}>
         <ItemsToolbar search={search} onSearchChange={setSearch} onAddClick={() => setAddOpen(true)} />
 

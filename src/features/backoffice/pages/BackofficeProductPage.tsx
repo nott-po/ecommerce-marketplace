@@ -48,7 +48,7 @@ export const BackofficeProductPage: React.FC<BackofficeProductPageProps> = ({ id
 
   if (isLoading) {
     return (
-      <Box sx={{ px: 6, py: 3 }}>
+      <Box sx={{ px: { xs: 2, sm: 4, md: 6 }, py: 3 }}>
         <Skeleton variant="rectangular" height={48} sx={{ mb: 3, borderRadius: 1 }} />
         <Skeleton variant="rectangular" height={500} sx={{ borderRadius: 2 }} />
       </Box>
@@ -57,7 +57,7 @@ export const BackofficeProductPage: React.FC<BackofficeProductPageProps> = ({ id
 
   if (isError || !product) {
     return (
-      <Box sx={{ px: 6, py: 3 }}>
+      <Box sx={{ px: { xs: 2, sm: 4, md: 6 }, py: 3 }}>
         <Typography color="error">Failed to load product. <Link sx={{ cursor: 'pointer' }} onClick={onBack}>Go back</Link></Typography>
       </Box>
     )
@@ -70,7 +70,7 @@ export const BackofficeProductPage: React.FC<BackofficeProductPageProps> = ({ id
     : null
 
   return (
-    <Box sx={{ px: 6, py: 3 }}>
+    <Box sx={{ px: { xs: 2, sm: 4, md: 6 }, py: 3 }}>
       {/* Breadcrumb */}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
         <Button

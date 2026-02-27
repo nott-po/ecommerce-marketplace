@@ -10,7 +10,7 @@ export const Route = createFileRoute('/backoffice/master-data')({
 
 function MasterDataPage() {
   return (
-    <Box sx={{ px: 6, py: 3 }}>
+    <Box sx={{ px: { xs: 2, sm: 4, md: 6 }, py: 3 }}>
       <Paper sx={{ p: 4, borderRadius: 2, border: `1px solid ${UI_COLORS.border}`, textAlign: 'center' }}>
         <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
           Master Data

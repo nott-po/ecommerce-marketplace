@@ -1,6 +1,6 @@
 export type ItemStatus = 'In Sale' | 'In Progress' | 'Locked' | 'Reserved' | 'Sold' | 'Closed Out'
 
-// Deterministic mock status based on product id — weighted toward Closed Out
+// mock status based on product id — weighted toward Closed Out
 export const STATUS_CYCLE: ItemStatus[] = [
   'In Sale',
   'In Progress',

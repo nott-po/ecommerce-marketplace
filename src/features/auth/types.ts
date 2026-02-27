@@ -37,6 +37,6 @@ export interface DummyJsonMeResponse {
   firstName: string
   lastName: string
   image: string
-  role: string
+  role: 'admin' | 'user' | string
 }
 

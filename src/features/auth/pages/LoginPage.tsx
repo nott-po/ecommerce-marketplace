@@ -7,7 +7,7 @@ import Divider from '@mui/material/Divider'
 import CircularProgress from '@mui/material/CircularProgress'
 import { styled } from '@mui/material/styles'
 import { useRouter } from '@tanstack/react-router'
-import { BACKOFFICE_COLORS, BRAND_COLORS, UI_COLORS } from '../../../styles/theme'
+import { BACKOFFICE_COLORS, BORDER_RADIUS, BRAND_COLORS, UI_COLORS } from '../../../styles/theme'
 import { FlatButton } from '../../../shared/ui/FlatButton'
 import { ContentPaper } from '../../../shared/ui/ContentPaper'
 import { ClickableRow } from '../../../shared/ui/ClickableRow'
@@ -28,12 +28,12 @@ const LoginPageRoot = styled(Box)(({ theme }) => ({
   padding: theme.spacing(0, 2),
 }))
 
-const LoginTextField = styled(TextField)(({ theme }) => ({
+const LoginTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
-    borderRadius: (theme.shape.borderRadius as number) * 1.5,
+    borderRadius: BORDER_RADIUS * 1.5,
     backgroundColor: UI_COLORS.bgSubtle,
   },
-}))
+})
 
 const LoginSubmitButton = styled(FlatButton)(({ theme }) => ({
   fontWeight: 600,

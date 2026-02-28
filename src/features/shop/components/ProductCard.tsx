@@ -12,7 +12,7 @@ import { styled } from '@mui/material/styles'
 import { StatusBadge } from '../../../core/ui/StatusBadge'
 import { formatPrice, formatDiscount } from '../../../utils/formatters'
 import type { Product } from '../../../api/types'
-import { BRAND_COLORS } from '../../../styles/theme'
+import { BRAND_COLORS, SHADOWS } from '../../../styles/theme'
 
 const ProductImage = styled('img')({
   width: '100%',
@@ -43,7 +43,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         position: 'relative',
         overflow: 'hidden',
         transition: 'box-shadow 0.2s',
-        '&:hover': { boxShadow: '0 4px 20px rgba(0,0,0,0.10)' },
+        '&:hover': { boxShadow: SHADOWS.hover },
       }}
     >
       {/* Entire card is clickable */}
@@ -113,7 +113,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           top: 6,
           right: 6,
           bgcolor: 'rgba(255,255,255,0.85)',
-          '&:hover': { bgcolor: '#fff' },
+          '&:hover': { bgcolor: 'background.paper' },
           p: 0.5,
           zIndex: 1,
         }}

@@ -17,6 +17,8 @@ import { STATUS_CYCLE } from '../types/backoffice'
 import { BACKOFFICE_COLORS, BRAND_COLORS, STATUS_COLORS, UI_COLORS } from '../../../styles/theme'
 import { ContentPaper } from '../../../shared/ui/ContentPaper'
 
+const TEXT_CLIP = { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } as const
+
 const STATUS_STYLE: Record<ItemStatus, { bg: string; color: string }> = {
   'In Sale':     { bg: STATUS_COLORS.inSaleBg,     color: STATUS_COLORS.inSale },
   'In Progress': { bg: STATUS_COLORS.inProgressBg, color: STATUS_COLORS.inProgress },
@@ -28,10 +30,10 @@ const STATUS_STYLE: Record<ItemStatus, { bg: string; color: string }> = {
 
 const Field: React.FC<{ label: string; value: React.ReactNode }> = ({ label, value }) => (
   <Box>
-    <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: UI_COLORS.textTertiary, textTransform: 'uppercase', letterSpacing: '0.05em', mb: 0.25 }}>
+    <Typography variant="caption" sx={{ fontWeight: 600, color: UI_COLORS.textTertiary, textTransform: 'uppercase', letterSpacing: '0.05em', mb: 0.25, display: 'block' }}>
       {label}
     </Typography>
-    <Typography sx={{ fontSize: '0.9375rem', color: UI_COLORS.textPrimary }}>
+    <Typography variant="labelLg" sx={{ color: UI_COLORS.textPrimary }}>
       {value}
     </Typography>
   </Box>
@@ -78,19 +80,19 @@ export const BackofficeProductPage: React.FC<BackofficeProductPageProps> = ({ id
           onClick={onBack}
           variant="text"
           color="inherit"
-          sx={{ minWidth: 0, color: UI_COLORS.textSecondary, fontWeight: 400, fontSize: '0.875rem', px: 0 }}
+          sx={{ minWidth: 0, color: UI_COLORS.textSecondary, fontWeight: 400, px: 0 }}
         >
           Back
         </Button>
-        <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} sx={{ '& .MuiBreadcrumbs-separator': { color: UI_COLORS.textTertiary } }}>
+        <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} sx={{ fontSize: '0.875rem', '& .MuiBreadcrumbs-separator': { color: UI_COLORS.textTertiary } }}>
           <Link
             underline="hover"
-            sx={{ cursor: 'pointer', fontSize: '0.875rem', color: UI_COLORS.textSecondary }}
+            sx={{ cursor: 'pointer', fontSize: 'inherit', color: UI_COLORS.textSecondary }}
             onClick={() => onNavigate('/backoffice')}
           >
             Maintain Items
           </Link>
-          <Typography sx={{ fontSize: '0.875rem', color: UI_COLORS.textMedium, maxWidth: 300, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          <Typography variant="labelMd" sx={{ color: UI_COLORS.textMedium, maxWidth: 300, ...TEXT_CLIP }}>
             {product.title}
           </Typography>
         </Breadcrumbs>
@@ -132,7 +134,7 @@ export const BackofficeProductPage: React.FC<BackofficeProductPageProps> = ({ id
               />
             </Box>
 
-            <Typography sx={{ fontSize: '0.875rem', color: UI_COLORS.textSecondary, mb: 2.5, lineHeight: 1.6 }}>
+            <Typography variant="labelMd" sx={{ color: UI_COLORS.textSecondary, mb: 2.5, lineHeight: 1.6 }}>
               {product.description}
             </Typography>
 
@@ -179,8 +181,7 @@ export const BackofficeProductPage: React.FC<BackofficeProductPageProps> = ({ id
               </Grid>
               <Grid size={{ xs: 6, sm: 4 }}>
                 <Field label="Availability" value={
-                  <Typography component="span" sx={{
-                    fontSize: '0.9375rem',
+                  <Typography component="span" variant="labelLg" sx={{
                     fontWeight: 500,
                     color: product.availabilityStatus === 'In Stock'
                       ? STATUS_COLORS.inStock
@@ -223,19 +224,19 @@ export const BackofficeProductPage: React.FC<BackofficeProductPageProps> = ({ id
         {product.reviews.length > 0 && (
           <>
             <Divider sx={{ my: 3 }} />
-            <Typography sx={{ fontWeight: 700, fontSize: '1rem', mb: 2 }}>
+            <Typography variant="body1" sx={{ fontWeight: 700, mb: 2 }}>
               Customer Reviews ({product.reviews.length})
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
               {product.reviews.map((r, i) => (
                 <Box key={i} sx={{ p: 2, bgcolor: UI_COLORS.bgSubtle, borderRadius: 1.5, border: `1px solid ${UI_COLORS.bgActive}` }}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
-                    <Typography sx={{ fontWeight: 600, fontSize: '0.875rem' }}>{r.reviewerName}</Typography>
-                    <Typography sx={{ fontSize: '0.8125rem', color: UI_COLORS.textTertiary }}>
+                    <Typography variant="labelMd" sx={{ fontWeight: 600 }}>{r.reviewerName}</Typography>
+                    <Typography variant="body2" sx={{ color: UI_COLORS.textTertiary }}>
                       {'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}
                     </Typography>
                   </Box>
-                  <Typography sx={{ fontSize: '0.875rem', color: UI_COLORS.textSecondary }}>{r.comment}</Typography>
+                  <Typography variant="labelMd" sx={{ color: UI_COLORS.textSecondary }}>{r.comment}</Typography>
                 </Box>
               ))}
             </Box>

@@ -68,6 +68,12 @@ export const UI_COLORS = {
 
 export const BORDER_RADIUS = 8
 
+export const SHADOWS = {
+  card:  '0 1px 4px rgba(0,0,0,0.06)',   // ContentPaper default elevation
+  paper: '0 4px 24px rgba(0,0,0,0.07)',  // floating cards (e.g. login form)
+  hover: '0 4px 20px rgba(0,0,0,0.10)',  // card hover elevation
+} as const
+
 export const theme = createTheme({
   palette: {
     primary: {

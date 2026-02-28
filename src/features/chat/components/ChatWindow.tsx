@@ -71,12 +71,12 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ open, onClose, product }
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <StoreIcon sx={{ color: '#fff', fontSize: 20 }} />
-          <Typography sx={{ color: '#fff', fontWeight: 600, fontSize: '0.9375rem' }}>
+          <StoreIcon sx={{ color: 'common.white', fontSize: 20 }} />
+          <Typography sx={{ color: 'common.white', fontWeight: 600, fontSize: '0.9375rem' }}>
             Chat with Shop
           </Typography>
         </Box>
-        <IconButton onClick={onClose} sx={{ color: '#fff', p: 0.75 }}>
+        <IconButton onClick={onClose} sx={{ color: 'common.white', p: 0.75 }}>
           <CloseIcon fontSize="small" />
         </IconButton>
       </Box>

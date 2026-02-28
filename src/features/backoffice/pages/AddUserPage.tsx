@@ -19,24 +19,23 @@ import { BACKOFFICE_COLORS, UI_COLORS } from '../../../styles/theme'
 import { FlatButton } from '../../../shared/ui/FlatButton'
 import { ContentPaper } from '../../../shared/ui/ContentPaper'
 
-const fieldSx = {
-  '& .MuiOutlinedInput-root': {
-    bgcolor: UI_COLORS.bgForm,
-    borderRadius: 1.5,
-    '& fieldset': { border: 'none' },
-    '&:hover fieldset': { border: 'none' },
-    '&.Mui-focused fieldset': { border: `1.5px solid ${BACKOFFICE_COLORS.primary}` },
-  },
-  '& .MuiInputLabel-root': { fontSize: '0.875rem' },
-}
-
-const selectSx = {
+// Shared inner styles applied to every outlined input in this form
+const inputInnerSx = {
   bgcolor: UI_COLORS.bgForm,
   borderRadius: 1.5,
   '& fieldset': { border: 'none' },
   '&:hover fieldset': { border: 'none' },
   '&.Mui-focused fieldset': { border: `1.5px solid ${BACKOFFICE_COLORS.primary}` },
 }
+
+// TextField wraps OutlinedInput → styles must target the inner root
+const fieldSx = {
+  '& .MuiOutlinedInput-root': inputInnerSx,
+  '& .MuiInputLabel-root': { fontSize: '0.875rem' },
+}
+
+// Select IS the OutlinedInput root → styles apply directly
+const selectSx = inputInnerSx
 
 const Col: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1, minWidth: 0 }}>

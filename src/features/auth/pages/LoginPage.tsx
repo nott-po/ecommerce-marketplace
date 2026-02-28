@@ -7,7 +7,7 @@ import Divider from '@mui/material/Divider'
 import CircularProgress from '@mui/material/CircularProgress'
 import { styled } from '@mui/material/styles'
 import { useRouter } from '@tanstack/react-router'
-import { BACKOFFICE_COLORS, BORDER_RADIUS, BRAND_COLORS, UI_COLORS } from '../../../styles/theme'
+import { BACKOFFICE_COLORS, BORDER_RADIUS, BRAND_COLORS, SHADOWS, UI_COLORS } from '../../../styles/theme'
 import { FlatButton } from '../../../shared/ui/FlatButton'
 import { ContentPaper } from '../../../shared/ui/ContentPaper'
 import { ClickableRow } from '../../../shared/ui/ClickableRow'
@@ -92,7 +92,7 @@ export const LoginPage: React.FC = () => {
         sx={{ height: 72, mb: 3 }}
       />
 
-      <ContentPaper sx={{ width: '100%', maxWidth: 420, p: 4, boxShadow: '0 4px 24px rgba(0,0,0,0.07)' }}>
+      <ContentPaper sx={{ width: '100%', maxWidth: 420, p: 4, boxShadow: SHADOWS.paper }}>
         <Typography variant="h6" sx={{ fontWeight: 700, mb: 0.5, textAlign: 'center' }}>
           Welcome back
         </Typography>

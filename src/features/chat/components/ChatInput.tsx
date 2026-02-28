@@ -35,7 +35,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
         gap: 1,
         p: 1.5,
         borderTop: `1px solid ${UI_COLORS.border}`,
-        bgcolor: '#fff',
+        bgcolor: 'background.paper',
         flexShrink: 0,
       }}
     >
@@ -52,7 +52,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
         sx={{
           '& .MuiOutlinedInput-root': {
             borderRadius: 3,
-            bgcolor: disabled ? UI_COLORS.bgSubtle : '#fff',
+            bgcolor: disabled ? UI_COLORS.bgSubtle : 'background.paper',
             fontSize: '0.875rem',
           },
         }}
@@ -62,7 +62,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
         disabled={disabled || !value.trim()}
         sx={{
           bgcolor: BRAND_COLORS.primary,
-          color: '#fff',
+          color: 'common.white',
           flexShrink: 0,
           '&:hover': { bgcolor: BRAND_COLORS.primaryDark },
           '&.Mui-disabled': { bgcolor: UI_COLORS.bgActive, color: UI_COLORS.textTertiary },

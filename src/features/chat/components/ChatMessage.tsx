@@ -47,7 +47,7 @@ export const ChatMessageBubble: React.FC<ChatMessageProps> = ({ message }) => {
             px: 1.75,
             py: 1,
             bgcolor: isUser ? BRAND_COLORS.primary : UI_COLORS.bgSubtle,
-            color: isUser ? '#fff' : UI_COLORS.textPrimary,
+            color: isUser ? 'common.white' : UI_COLORS.textPrimary,
             borderRadius: isUser ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
             border: isUser ? 'none' : `1px solid ${UI_COLORS.border}`,
           }}

@@ -3,7 +3,29 @@ import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import SendIcon from '@mui/icons-material/Send'
+import { styled } from '@mui/material/styles'
 import { BRAND_COLORS, UI_COLORS } from '../../../styles/theme'
+
+const MessageTextField = styled(TextField)(({ theme }) => ({
+  '& .MuiOutlinedInput-root': {
+    borderRadius: (theme.shape.borderRadius as number) * 3,
+    fontSize: '0.875rem',
+    backgroundColor: theme.palette.background.paper,
+  },
+  '& .MuiOutlinedInput-root.Mui-disabled': {
+    backgroundColor: UI_COLORS.bgSubtle,
+  },
+}))
+
+const SendButton = styled(IconButton)(({ theme }) => ({
+  backgroundColor: BRAND_COLORS.primary,
+  color: 'white',
+  flexShrink: 0,
+  borderRadius: (theme.shape.borderRadius as number) * 2,
+  padding: theme.spacing(1),
+  '&:hover': { backgroundColor: BRAND_COLORS.primaryDark },
+  '&.Mui-disabled': { backgroundColor: UI_COLORS.bgActive, color: UI_COLORS.textTertiary },
+}))
 
 interface ChatInputProps {
   onSend: (text: string) => void
@@ -39,7 +61,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
         flexShrink: 0,
       }}
     >
-      <TextField
+      <MessageTextField
         fullWidth
         multiline
         maxRows={3}
@@ -49,29 +71,10 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
         onChange={e => setValue(e.target.value)}
         onKeyDown={handleKeyDown}
         disabled={disabled}
-        sx={{
-          '& .MuiOutlinedInput-root': {
-            borderRadius: 3,
-            bgcolor: disabled ? UI_COLORS.bgSubtle : 'background.paper',
-            fontSize: '0.875rem',
-          },
-        }}
       />
-      <IconButton
-        onClick={handleSend}
-        disabled={disabled || !value.trim()}
-        sx={{
-          bgcolor: BRAND_COLORS.primary,
-          color: 'common.white',
-          flexShrink: 0,
-          '&:hover': { bgcolor: BRAND_COLORS.primaryDark },
-          '&.Mui-disabled': { bgcolor: UI_COLORS.bgActive, color: UI_COLORS.textTertiary },
-          borderRadius: 2,
-          p: 1,
-        }}
-      >
+      <SendButton onClick={handleSend} disabled={disabled || !value.trim()}>
         <SendIcon sx={{ fontSize: 18 }} />
-      </IconButton>
+      </SendButton>
     </Box>
   )
 }

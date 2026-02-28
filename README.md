@@ -1,8 +1,6 @@
 # E-Commerce Marketplace
 
-> Internship project focused on modern React development with TypeScript, TanStack ecosystem, and real-time features.
-
-**Live Demo:** [Add your deployment link here]
+**Live Demo**
 
 ---
 
@@ -97,19 +95,6 @@ yarn typecheck  # TypeScript type checking
 
 ---
 
-## Deployment
-
-Deployed on **Netlify** with automatic builds from the main branch.
-
-**Steps to deploy:**
-
-1. Push to GitHub
-2. Connect repository to [Netlify](https://netlify.com)
-3. Build settings are configured in `netlify.toml`
-4. Add deployment URL to README
-
----
-
 ## Highlights
 
 - Strict TypeScript typing (no `any` allowed)
@@ -131,7 +116,3 @@ Deployed on **Netlify** with automatic builds from the main branch.
 - [Material UI](https://mui.com/)
 - [DummyJSON API](https://dummyjson.com/)
 - [Vite](https://vite.dev/)
-
----
-
-_Built as part of Innowise Group internship program_

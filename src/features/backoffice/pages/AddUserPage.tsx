@@ -14,12 +14,12 @@ import Breadcrumbs from '@mui/material/Breadcrumbs'
 import Link from '@mui/material/Link'
 import Divider from '@mui/material/Divider'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'
+import { styled } from '@mui/material/styles'
 import { useRouter } from '@tanstack/react-router'
 import { BACKOFFICE_COLORS, UI_COLORS } from '../../../styles/theme'
 import { FlatButton } from '../../../shared/ui/FlatButton'
 import { ContentPaper } from '../../../shared/ui/ContentPaper'
 
-// Shared inner styles applied to every outlined input in this form
 const inputInnerSx = {
   bgcolor: UI_COLORS.bgForm,
   borderRadius: 1.5,
@@ -28,14 +28,24 @@ const inputInnerSx = {
   '&.Mui-focused fieldset': { border: `1.5px solid ${BACKOFFICE_COLORS.primary}` },
 }
 
-// TextField wraps OutlinedInput → styles must target the inner root
+
 const fieldSx = {
   '& .MuiOutlinedInput-root': inputInnerSx,
   '& .MuiInputLabel-root': { fontSize: '0.875rem' },
 }
 
-// Select IS the OutlinedInput root → styles apply directly
 const selectSx = inputInnerSx
+
+const FieldGroupLabel = styled(FormLabel)(({ theme }) => ({
+  fontSize: theme.typography.caption.fontSize,
+  color: UI_COLORS.textSecondary,
+  display: 'block',
+  marginBottom: theme.spacing(0.25),
+}))
+
+const FieldInputLabel = styled(InputLabel)(({ theme }) => ({
+  fontSize: theme.typography.body2.fontSize,
+}))
 
 const Col: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1, minWidth: 0 }}>
@@ -120,18 +130,18 @@ export const AddUserPage: React.FC = () => {
 
               <Box sx={{ display: 'flex', gap: 4 }}>
                 <Box>
-                  <FormLabel sx={{ fontSize: '0.8125rem', color: UI_COLORS.textSecondary, display: 'block', mb: 0.25 }}>
+                  <FieldGroupLabel>
                     Archived
-                  </FormLabel>
+                  </FieldGroupLabel>
                   <RadioGroup row value={archived} onChange={e => setArchived(e.target.value)}>
                     <FormControlLabel value="Yes" control={<Radio size="small" />} label={<Typography variant="body2">Yes</Typography>} />
                     <FormControlLabel value="No" control={<Radio size="small" />} label={<Typography variant="body2">No</Typography>} />
                   </RadioGroup>
                 </Box>
                 <Box>
-                  <FormLabel sx={{ fontSize: '0.8125rem', color: UI_COLORS.textSecondary, display: 'block', mb: 0.25 }}>
+                  <FieldGroupLabel>
                     Active
-                  </FormLabel>
+                  </FieldGroupLabel>
                   <RadioGroup row value={active} onChange={e => setActive(e.target.value)}>
                     <FormControlLabel value="Yes" control={<Radio size="small" />} label={<Typography variant="body2">Yes</Typography>} />
                     <FormControlLabel value="No" control={<Radio size="small" />} label={<Typography variant="body2">No</Typography>} />
@@ -150,7 +160,7 @@ export const AddUserPage: React.FC = () => {
               />
 
               <FormControl fullWidth size="small">
-                <InputLabel sx={{ fontSize: '0.875rem' }}>Salutation</InputLabel>
+                <FieldInputLabel>Salutation</FieldInputLabel>
                 <Select label="Salutation" value={salutation} onChange={e => setSalutation(e.target.value)} sx={selectSx}>
                   <MenuItem value="mr">Mr.</MenuItem>
                   <MenuItem value="ms">Ms.</MenuItem>
@@ -239,7 +249,7 @@ export const AddUserPage: React.FC = () => {
               />
 
               <FormControl fullWidth size="small">
-                <InputLabel sx={{ fontSize: '0.875rem' }}>Country *</InputLabel>
+                <FieldInputLabel>Country *</FieldInputLabel>
                 <Select label="Country *" value={country} onChange={e => setCountry(e.target.value)} sx={selectSx}>
                   <MenuItem value="AT">Austria</MenuItem>
                   <MenuItem value="DE">Germany</MenuItem>
@@ -282,9 +292,9 @@ export const AddUserPage: React.FC = () => {
               />
 
               <Box>
-                <FormLabel sx={{ fontSize: '0.8125rem', color: UI_COLORS.textSecondary, display: 'block', mb: 0.25 }}>
+                <FieldGroupLabel>
                   Shipping
-                </FormLabel>
+                </FieldGroupLabel>
                 <RadioGroup row value={shipping} onChange={e => setShipping(e.target.value)}>
                   <FormControlLabel value="Yes" control={<Radio size="small" />} label={<Typography variant="body2">Yes</Typography>} />
                   <FormControlLabel value="No" control={<Radio size="small" />} label={<Typography variant="body2">No</Typography>} />

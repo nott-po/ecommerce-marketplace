@@ -3,7 +3,6 @@ import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
-import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
@@ -15,6 +14,7 @@ import type { AddItemForm } from '../types/backoffice'
 import { BACKOFFICE_COLORS, BORDER_RADIUS } from '../../../styles/theme'
 import { slugToLabel } from '../../../utils/formatters'
 import { FlatButton } from '../../../shared/ui/FlatButton'
+import { RoundedTextField } from '../../../shared/ui/RoundedTextField'
 import { CATEGORY_HIERARCHY } from '../../../utils/constants'
 import type { CategoryLeaf } from '../../../utils/constants'
 
@@ -37,8 +37,7 @@ const ModalTitle = styled(DialogTitle)({
   paddingBottom: 8,
 })
 
-const ModalTextField = styled(TextField)(({ theme }) => ({
-  '& .MuiOutlinedInput-root': { borderRadius: BORDER_RADIUS * 1.5 },
+const ModalTextField = styled(RoundedTextField)(({ theme }) => ({
   '& label': { fontSize: theme.typography.labelMd.fontSize },
 }))
 

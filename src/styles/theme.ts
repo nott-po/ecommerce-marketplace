@@ -1,7 +1,6 @@
 import { createTheme } from '@mui/material/styles'
 import type { CSSProperties } from 'react'
 
-// ─── Custom typography variant declarations ────────────────────────────────────
 declare module '@mui/material/styles' {
   interface TypographyVariants {
     labelMd: CSSProperties  // 0.875rem — table cells, form labels
@@ -19,7 +18,6 @@ declare module '@mui/material/Typography' {
   }
 }
 
-// ─── Shop brand colors ────────────────────────────────────────────────────────
 export const BRAND_COLORS = {
   primary:        '#E55A63',
   primaryDark:    '#C94850',
@@ -29,7 +27,6 @@ export const BRAND_COLORS = {
   primaryBorder:  '#ffcccc',
 } as const
 
-// ─── Backoffice colors ────────────────────────────────────────────────────────
 export const BACKOFFICE_COLORS = {
   navBg:       '#3C3C3C',
   primary:     '#1AADE8',
@@ -37,7 +34,6 @@ export const BACKOFFICE_COLORS = {
   pageBg:      '#f0f2f5',
 } as const
 
-// ─── Semantic status colors (item status + stock availability) ────────────────
 export const STATUS_COLORS = {
   inSale:       '#2BB442',
   inProgress:   '#007AFF',
@@ -48,7 +44,6 @@ export const STATUS_COLORS = {
   inStock:      '#2BB442',
   lowStock:     '#FF9500',
   outOfStock:   '#FF2D55',
-  // Tinted chip backgrounds
   inSaleBg:     '#e6f9ec',
   inProgressBg: '#e8f2ff',
   lockedBg:     '#f3f3f3',
@@ -57,7 +52,6 @@ export const STATUS_COLORS = {
   closedOutBg:  '#f5f5f5',
 } as const
 
-// ─── Neutral UI palette ───────────────────────────────────────────────────────
 export const UI_COLORS = {
   textPrimary:   '#1a1a1a',
   textMedium:    '#374151',
@@ -70,6 +64,14 @@ export const UI_COLORS = {
   bgSubtle:      '#f9fafb',
   bgActive:      '#f0f0f0',
   bgForm:        '#f5f6f7',
+} as const
+
+export const BORDER_RADIUS = 8
+
+export const SHADOWS = {
+  card:  '0 1px 4px rgba(0,0,0,0.06)',   // ContentPaper default elevation
+  paper: '0 4px 24px rgba(0,0,0,0.07)',  // floating cards (e.g. login form)
+  hover: '0 4px 20px rgba(0,0,0,0.10)',  // card hover elevation
 } as const
 
 export const theme = createTheme({

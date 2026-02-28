@@ -5,20 +5,23 @@ import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
+import Tooltip from '@mui/material/Tooltip'
 import Divider from '@mui/material/Divider'
 import Rating from '@mui/material/Rating'
+import CircularProgress from '@mui/material/CircularProgress'
 import MuiBreadcrumbs from '@mui/material/Breadcrumbs'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
-import { LoadingState } from '../../../core/ui/LoadingState'
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline'
 import { ErrorState } from '../../../core/ui/ErrorState'
 import { ClickableText } from '../../../core/ui/ClickableText'
 import { useProduct } from '../lib/queries'
 import { useFavorites } from '../../../hooks/useFavorites'
 import { formatPrice, formatDiscount, slugToLabel } from '../../../utils/formatters'
 import { BRAND_COLORS, UI_COLORS } from '../../../styles/theme'
+import { ChatWindow } from '../../chat/components/ChatWindow'
 
 interface ProductDetailPageProps {
   id: number
@@ -34,8 +37,13 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   const { data: product, isLoading, isError, refetch } = useProduct(id)
   const { isFavorite, toggle } = useFavorites()
   const [selectedImage, setSelectedImage] = useState(0)
+  const [chatOpen, setChatOpen] = useState(false)
 
-  if (isLoading) return <Box sx={{ p: 4 }}><LoadingState count={1} /></Box>
+  if (isLoading) return (
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+      <CircularProgress sx={{ color: BRAND_COLORS.primary }} />
+    </Box>
+  )
   if (isError || !product) return <ErrorState onRetry={() => void refetch()} />
 
   const salePrice =
@@ -92,6 +100,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
               objectFit: 'cover',
               borderRadius: 2,
               border: `1px solid ${UI_COLORS.border}`,
+              bgcolor: UI_COLORS.bgSubtle,
             }}
           />
           {product.images.length > 1 && (
@@ -197,12 +206,48 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
           <Divider sx={{ my: 2.5 }} />
 
           <Box sx={{ display: 'flex', gap: 2 }}>
-            <Button variant="contained" size="large" color="primary" fullWidth sx={{ py: 1.5, fontWeight: 600 }}>
-              Add to cart
+            <Tooltip title="Cart not available yet">
+              <span style={{ flex: 1 }}>
+                <Button variant="contained" size="large" color="primary" fullWidth disabled sx={{ py: 1.5, fontWeight: 600 }}>
+                  Add to cart
+                </Button>
+              </span>
+            </Tooltip>
+            <Button
+              variant="outlined"
+              size="large"
+              startIcon={<ChatBubbleOutlineIcon />}
+              onClick={() => setChatOpen(true)}
+              sx={{
+                py: 1.5,
+                fontWeight: 600,
+                color: BRAND_COLORS.primary,
+                borderColor: BRAND_COLORS.primaryBorder,
+                whiteSpace: 'nowrap',
+                flexShrink: 0,
+                '&:hover': {
+                  borderColor: BRAND_COLORS.primary,
+                  bgcolor: BRAND_COLORS.primaryAlpha12,
+                },
+              }}
+            >
+              Contact Shop
             </Button>
           </Box>
         </Grid>
       </Grid>
+
+      <ChatWindow
+        open={chatOpen}
+        onClose={() => setChatOpen(false)}
+        product={{
+          id: product.id,
+          title: product.title,
+          thumbnail: product.thumbnail,
+          price: product.price,
+          salePrice,
+        }}
+      />
     </Box>
   )
 }

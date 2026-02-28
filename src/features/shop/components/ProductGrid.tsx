@@ -18,6 +18,7 @@ interface ProductGridProps {
   isError: boolean
   onPageChange: (page: number) => void
   onRetry: () => void
+  onNavigate: (id: number) => void
 }
 
 export const ProductGrid: React.FC<ProductGridProps> = ({
@@ -28,6 +29,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
   isError,
   onPageChange,
   onRetry,
+  onNavigate,
 }) => {
   const { isFavorite, toggle } = useFavorites()
   const totalPages = Math.ceil(total / PRODUCTS_PAGE_SIZE)
@@ -45,6 +47,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
               product={product}
               isFavorite={isFavorite(product.id)}
               onToggleFavorite={toggle}
+              onNavigate={onNavigate}
             />
           </Grid>
         ))}

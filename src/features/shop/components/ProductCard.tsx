@@ -8,13 +8,11 @@ import IconButton from '@mui/material/IconButton'
 import Stack from '@mui/material/Stack'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
-import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined'
-import { useRouter } from '@tanstack/react-router'
 import { styled } from '@mui/material/styles'
 import { StatusBadge } from '../../../core/ui/StatusBadge'
 import { formatPrice, formatDiscount } from '../../../utils/formatters'
 import type { Product } from '../../../api/types'
-import { BRAND_COLORS } from '../../../styles/theme'
+import { BRAND_COLORS, SHADOWS } from '../../../styles/theme'
 
 const ProductImage = styled('img')({
   width: '100%',
@@ -27,14 +25,15 @@ interface ProductCardProps {
   product: Product
   isFavorite: boolean
   onToggleFavorite: (id: number) => void
+  onNavigate: (id: number) => void
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   isFavorite,
   onToggleFavorite,
+  onNavigate,
 }) => {
-  const router = useRouter()
   const isOnSale = product.discountPercentage > 0
   const salePrice = isOnSale ? formatDiscount(product.price, product.discountPercentage) : null
 
@@ -44,12 +43,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         position: 'relative',
         overflow: 'hidden',
         transition: 'box-shadow 0.2s',
-        '&:hover': { boxShadow: '0 4px 20px rgba(0,0,0,0.10)' },
+        '&:hover': { boxShadow: SHADOWS.hover },
       }}
     >
       {/* Entire card is clickable */}
       <CardActionArea
-        onClick={() => router.history.push(`/shop/product/${product.id}`)}
+        onClick={() => onNavigate(product.id)}
         sx={{ display: 'block' }}
       >
         <Box sx={{ position: 'relative' }}>
@@ -85,34 +84,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             {product.title}
           </Typography>
 
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Box>
-              {salePrice !== null ? (
-                <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 0.75 }}>
-                  <Typography variant="subtitle2" color="primary">
-                    {formatPrice(salePrice)}
-                  </Typography>
-                  <Typography
-                    variant="caption"
-                    sx={{ textDecoration: 'line-through', color: 'text.disabled' }}
-                  >
-                    {formatPrice(product.price)}
-                  </Typography>
-                </Box>
-              ) : (
-                <Typography variant="subtitle2">{formatPrice(product.price)}</Typography>
-              )}
-            </Box>
-
-            {/* Shopping bag — stops propagation so it doesn't also navigate */}
-            <IconButton
-              size="small"
-              component="span"
-              onClick={e => e.stopPropagation()}
-              sx={{ color: 'text.secondary', p: 0.5 }}
-            >
-              <ShoppingBagOutlinedIcon fontSize="small" />
-            </IconButton>
+          <Box>
+            {salePrice !== null ? (
+              <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 0.75 }}>
+                <Typography variant="subtitle2" color="primary">
+                  {formatPrice(salePrice)}
+                </Typography>
+                <Typography
+                  variant="caption"
+                  sx={{ textDecoration: 'line-through', color: 'text.disabled' }}
+                >
+                  {formatPrice(product.price)}
+                </Typography>
+              </Box>
+            ) : (
+              <Typography variant="subtitle2">{formatPrice(product.price)}</Typography>
+            )}
           </Box>
         </CardContent>
       </CardActionArea>
@@ -126,7 +113,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           top: 6,
           right: 6,
           bgcolor: 'rgba(255,255,255,0.85)',
-          '&:hover': { bgcolor: '#fff' },
+          '&:hover': { bgcolor: 'background.paper' },
           p: 0.5,
           zIndex: 1,
         }}

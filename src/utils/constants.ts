@@ -2,11 +2,8 @@ export type { CategoryLeaf, CategoryGroup } from './categoryTypes'
 import type { CategoryGroup } from './categoryTypes'
 
 export const API_BASE_URL = 'https://dummyjson.com' as const
+export const WS_URL = 'wss://ws.ifelse.io' as const
 
-// Number of products fetched from the API per request
-export const PRODUCTS_PER_PAGE = 100
-
-// Number of products displayed per page in the UI
 export const PRODUCTS_PAGE_SIZE = 20
 
 export const DEBOUNCE_DELAY_MS = 350
@@ -81,10 +78,8 @@ export const CATEGORY_HIERARCHY: CategoryGroup[] = [
   },
 ]
 
-// Categories excluded from "all products" view (removed from sidebar too)
 export const EXCLUDED_CATEGORIES = new Set(['vehicle', 'groceries'])
 
-// Gender / demographic tabs — separate from sidebar category tree
 export const GENDER_TABS = [
   { label: 'Women', category: 'womens-dresses' },
   { label: 'Men', category: 'mens-shirts' },

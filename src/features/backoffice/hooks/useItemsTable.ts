@@ -17,7 +17,7 @@ export const useItemsTable = () => {
 
   const toggleSelectAll = useCallback((items: BackofficeItem[]) => {
     setSelected(prev =>
-      prev.size === items.length ? new Set() : new Set(items.map(i => i.id)),
+      items.every(i => prev.has(i.id)) ? new Set() : new Set(items.map(i => i.id)),
     )
   }, [])
 

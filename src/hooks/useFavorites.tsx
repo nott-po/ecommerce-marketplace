@@ -6,7 +6,8 @@ const loadFromStorage = (): Set<number> => {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return new Set()
-    const parsed = JSON.parse(raw) as number[]
+    const parsed: unknown = JSON.parse(raw)
+    if (!Array.isArray(parsed) || !parsed.every(item => typeof item === 'number')) return new Set()
     return new Set(parsed)
   } catch {
     return new Set()

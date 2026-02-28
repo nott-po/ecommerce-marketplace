@@ -10,6 +10,8 @@ import { useRouter } from '@tanstack/react-router'
 import type { BackofficeItem, ItemStatus } from '../types/backoffice'
 import { STATUS_COLORS, BACKOFFICE_COLORS, UI_COLORS } from '../../../styles/theme'
 
+const TEXT_CLIP = { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } as const
+
 const STATUS_COLOR: Record<ItemStatus, string> = {
   'In Sale':     STATUS_COLORS.inSale,
   'In Progress': STATUS_COLORS.inProgress,
@@ -67,13 +69,7 @@ export const ItemsTableRow: React.FC<ItemsTableRowProps> = ({ item, selected, on
           />
           <Typography
             variant="labelMd"
-            sx={{
-              color: UI_COLORS.textPrimary,
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-              maxWidth: 280,
-            }}
+            sx={{ color: UI_COLORS.textPrimary, maxWidth: 280, ...TEXT_CLIP }}
           >
             {item.name}
           </Typography>
@@ -87,7 +83,7 @@ export const ItemsTableRow: React.FC<ItemsTableRowProps> = ({ item, selected, on
       <BodyTableCell sx={{ maxWidth: 220 }}>
         <Typography
           variant="labelMd"
-          sx={{ color: UI_COLORS.textSecondary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+          sx={{ color: UI_COLORS.textSecondary, ...TEXT_CLIP }}
         >
           {item.storage}
         </Typography>

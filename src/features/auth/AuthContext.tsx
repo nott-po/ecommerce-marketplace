@@ -2,15 +2,30 @@ import React, { createContext, useCallback, useContext, useState } from 'react'
 import { loginUser } from '../../api/endpoints/auth'
 import type { AuthContextValue, AuthUser } from './types'
 
-const STORAGE_TOKEN = 'auth_token'
-const STORAGE_ROLE = 'auth_role'
+export const STORAGE_TOKEN = 'auth_token'
+export const STORAGE_ROLE = 'auth_role'
 const STORAGE_USER = 'auth_user'
+
+const isAuthUser = (v: unknown): v is AuthUser => {
+  if (typeof v !== 'object' || v === null) return false
+  const o = v as Record<string, unknown>
+  return (
+    typeof o.id === 'number' &&
+    typeof o.username === 'string' &&
+    typeof o.email === 'string' &&
+    typeof o.firstName === 'string' &&
+    typeof o.lastName === 'string' &&
+    typeof o.image === 'string' &&
+    (o.role === 'admin' || o.role === 'user')
+  )
+}
 
 const readStorage = (): { user: AuthUser | null; token: string | null } => {
   try {
     const token = localStorage.getItem(STORAGE_TOKEN)
     const raw = localStorage.getItem(STORAGE_USER)
-    const user = raw ? (JSON.parse(raw) as AuthUser) : null
+    const parsed: unknown = raw ? JSON.parse(raw) : null
+    const user = isAuthUser(parsed) ? parsed : null
     return { token, user }
   } catch {
     return { user: null, token: null }

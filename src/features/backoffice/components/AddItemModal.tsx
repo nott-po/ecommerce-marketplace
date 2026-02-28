@@ -3,7 +3,6 @@ import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
-import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
@@ -12,24 +11,25 @@ import MenuItem from '@mui/material/MenuItem'
 import { styled } from '@mui/material/styles'
 import { useAddItem } from '../lib/mutations'
 import type { AddItemForm } from '../types/backoffice'
-import { BACKOFFICE_COLORS } from '../../../styles/theme'
+import { BACKOFFICE_COLORS, BORDER_RADIUS } from '../../../styles/theme'
 import { slugToLabel } from '../../../utils/formatters'
 import { FlatButton } from '../../../shared/ui/FlatButton'
+import { RoundedTextField } from '../../../shared/ui/RoundedTextField'
+import { CATEGORY_HIERARCHY } from '../../../utils/constants'
+import type { CategoryLeaf } from '../../../utils/constants'
 
-const CATEGORIES = [
-  'beauty', 'fragrances', 'skin-care', 'laptops', 'smartphones', 'tablets',
-  'mobile-accessories', 'tops', 'womens-dresses', 'mens-shirts', 'mens-shoes',
-  'womens-shoes', 'womens-bags', 'womens-jewellery', 'sunglasses', 'mens-watches',
-  'womens-watches', 'furniture', 'home-decoration', 'kitchen-accessories', 'sports-accessories',
-]
+const collectSlugs = (nodes: CategoryLeaf[]): string[] =>
+  nodes.flatMap(n => [n.slug, ...(n.children ? collectSlugs(n.children) : [])])
+
+const CATEGORIES = [...new Set(CATEGORY_HIERARCHY.flatMap(g => collectSlugs(g.children)))]
 
 const EMPTY: AddItemForm = { title: '', description: '', price: 0, category: '', stock: 1 }
 
-const ModalDialog = styled(Dialog)(({ theme }) => ({
+const ModalDialog = styled(Dialog)({
   '& .MuiDialog-paper': {
-    borderRadius: (theme.shape.borderRadius as number) * 2,
+    borderRadius: BORDER_RADIUS * 2,
   },
-}))
+})
 
 const ModalTitle = styled(DialogTitle)({
   fontWeight: 700,
@@ -37,13 +37,12 @@ const ModalTitle = styled(DialogTitle)({
   paddingBottom: 8,
 })
 
-const ModalTextField = styled(TextField)(({ theme }) => ({
-  '& .MuiOutlinedInput-root': { borderRadius: (theme.shape.borderRadius as number) * 1.5 },
+const ModalTextField = styled(RoundedTextField)(({ theme }) => ({
   '& label': { fontSize: theme.typography.labelMd.fontSize },
 }))
 
 const ModalFormControl = styled(FormControl)(({ theme }) => ({
-  '& .MuiOutlinedInput-root': { borderRadius: (theme.shape.borderRadius as number) * 1.5 },
+  '& .MuiOutlinedInput-root': { borderRadius: BORDER_RADIUS * 1.5 },
   '& label': { fontSize: theme.typography.labelMd.fontSize },
 }))
 

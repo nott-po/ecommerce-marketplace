@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import Box from '@mui/material/Box'
-import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Alert from '@mui/material/Alert'
 import Divider from '@mui/material/Divider'
 import CircularProgress from '@mui/material/CircularProgress'
 import { styled } from '@mui/material/styles'
 import { useRouter } from '@tanstack/react-router'
-import { BACKOFFICE_COLORS, BRAND_COLORS, UI_COLORS } from '../../../styles/theme'
+import { BACKOFFICE_COLORS, BRAND_COLORS, SHADOWS, UI_COLORS } from '../../../styles/theme'
 import { FlatButton } from '../../../shared/ui/FlatButton'
 import { ContentPaper } from '../../../shared/ui/ContentPaper'
 import { ClickableRow } from '../../../shared/ui/ClickableRow'
+import { RoundedTextField } from '../../../shared/ui/RoundedTextField'
 import { useLoginMutation } from '../lib/queries'
 
 const DEMO_ACCOUNTS = [
@@ -28,12 +28,11 @@ const LoginPageRoot = styled(Box)(({ theme }) => ({
   padding: theme.spacing(0, 2),
 }))
 
-const LoginTextField = styled(TextField)(({ theme }) => ({
+const LoginTextField = styled(RoundedTextField)({
   '& .MuiOutlinedInput-root': {
-    borderRadius: (theme.shape.borderRadius as number) * 1.5,
     backgroundColor: UI_COLORS.bgSubtle,
   },
-}))
+})
 
 const LoginSubmitButton = styled(FlatButton)(({ theme }) => ({
   fontWeight: 600,
@@ -92,7 +91,7 @@ export const LoginPage: React.FC = () => {
         sx={{ height: 72, mb: 3 }}
       />
 
-      <ContentPaper sx={{ width: '100%', maxWidth: 420, p: 4, boxShadow: '0 4px 24px rgba(0,0,0,0.07)' }}>
+      <ContentPaper sx={{ width: '100%', maxWidth: 420, p: 4, boxShadow: SHADOWS.paper }}>
         <Typography variant="h6" sx={{ fontWeight: 700, mb: 0.5, textAlign: 'center' }}>
           Welcome back
         </Typography>

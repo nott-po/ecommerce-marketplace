@@ -6,6 +6,7 @@ import { STATUS_CYCLE } from '../types/backoffice'
 import { slugToLabel } from '../../../utils/formatters'
 import { EXCLUDED_CATEGORIES } from '../../../utils/constants'
 
+// by product ID so the table looks realistic, but they are not real locations.
 const MOCK_STORAGES = [
   'Warehouse A — Berlin, DE',
   'Warehouse B — Vienna, AT',
